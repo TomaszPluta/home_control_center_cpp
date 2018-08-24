@@ -1,0 +1,5 @@
+platform.c:14:6:EnableUart	16	static
+platform.c:22:10:uart1_receive	4	static
+platform.c:29:6:uart1_send	16	static
+platform.c:37:6:SendString	24	static
+platform.c:53:6:SendBuffer	24	static

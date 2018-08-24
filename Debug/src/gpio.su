@@ -1,0 +1,6 @@
+gpio.c:22:6:EnableGpioClk	16	static
+gpio.c:34:6:SetGpioAsInput	16	static
+gpio.c:43:6:SetGpioAsInFloating	16	static
+gpio.c:56:6:SetGpioAsOutAltPushPUll	16	static
+gpio.c:75:6:SetGpioAsOutput	16	static
+gpio.c:84:6:IsGpioHigh	16	static
