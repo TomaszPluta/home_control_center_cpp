@@ -29,6 +29,8 @@ void EnableUart (USART_TypeDef * usart);
 void SendString (const char* string);
 void SendBuffer (const char* buffer, uint32_t size);
 
+void uart1_send(uint16_t c);
+
 
 #ifdef __cplusplus
 }

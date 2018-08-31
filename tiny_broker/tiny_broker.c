@@ -93,6 +93,7 @@ void broker_packets_dispatcher (broker_t * broker, uint8_t * frame, sockaddr_t *
 		add_client(broker, &new_client);
 		conn_ack_t conn_ack;
 		encode_conn_ack(&conn_ack, sesion_present, ack_code);
+		_delay_ms(5000);
 		broker->net->send(NULL, sockaddr, (uint8_t*)&conn_ack, sizeof(conn_ack_t) );
 		break;
 	}

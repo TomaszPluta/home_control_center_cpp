@@ -13,7 +13,7 @@
 
 void EnableUart (USART_TypeDef * usart){
 	RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
-	usart->BRR = 72000000/115200;
+	usart->BRR = 72000000/1200;
 	usart->CR1 |= USART_CR1_UE;
 	usart->CR1 |= USART_CR1_TE;
 	usart->CR1 |= USART_CR1_RE;
