@@ -182,6 +182,6 @@ void RFM12B_SWITCH_TO_RX(void)
 void RFM12B_SWITCH_TO_TX(void)
 {
 	RFM12B_WriteCMD(0x8228); //OPEN PA
-	delay_us( 4 );
+	_delay_ms( 1 );
 	RFM12B_WriteCMD(0x8238);
 }
