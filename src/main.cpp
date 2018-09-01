@@ -184,9 +184,9 @@ int main(){
 
 	 	while (1){
 
-	 		uint8_t buff[1] = {'x'};
-	 		RFM12B_SendData(buff, 1);
-			_delay_ms(50);
+	 		uint8_t buff[] = "helloworld";
+	 		RFM12B_SendData(buff, 10);
+			_delay_ms(500);
 	 		uint16_t status = RFM12B_RDSTATUS();
 
 
@@ -234,7 +234,7 @@ int main(){
 	 		}
 
 
-			_delay_ms(100);
+//			_delay_ms(100);
 
 
 	 	}

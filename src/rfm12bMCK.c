@@ -98,7 +98,7 @@ void RFM12B_SendData(uint8_t *TXbuf, uint8_t nr_of_bytes)
 	{
 		RFM12B_WriteFSKbyte( TXbuf[i] );
 	}
-
+	RFM12B_WriteFSKbyte( 0xAA ); // dummy
 
 }
 
@@ -142,7 +142,7 @@ uint8_t RFM12B_RDFIFO(void)
 
 	NSEL_RFM12_UP;
 
-	return(Result);
+	return(Result & 0xff);
 
 }
 

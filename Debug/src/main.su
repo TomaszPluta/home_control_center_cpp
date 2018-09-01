@@ -6,4 +6,4 @@ main.cpp:68:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
 main.cpp:84:5:int broker_discon(void*, sockaddr_t*)	16	static
 main.cpp:92:6:void RFM12B_GPIO_Init()	40	static
 main.cpp:149:10:uint16_t SpiTransfer(uint16_t)	16	static
-main.cpp:168:5:int main()	16	static
+main.cpp:168:5:int main()	24	static
