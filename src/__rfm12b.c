@@ -118,8 +118,57 @@ void Rfm12bSendByte(uint8_t byte)
 //}
 //
 
+
+
+//
+//uint16_t RFM12B_RDSTATUS(void)
+//{
+//
+//	uint16_t Result;
+//
+//	NSEL_RFM12_LOW;
+//
+//	/* Loop while DR register in not emplty */
+//	while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
+//
+//	/* Send byte through the SPI1 peripheral */
+//	SPI_I2S_SendData(SPI1, 0x0000);
+//
+//	/* Wait to receive a byte */
+//	while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+//
+//	/* Return the byte read from the SPI bus */
+//	Result = SPI_I2S_ReceiveData(SPI1);
+//
+//	NSEL_RFM12_HIGH;
+//
+//	return(Result);
+//}
+
+
+
+void rfSend(unsigned char data)
+{
+	uint16_t temp=0xB800, status=0x0000;
+	temp|=data;
+
+	while(  !status )
+	{
+		//status = RFM12B_RDSTATUS();
+		status = Rfm12bWriteCmd(0x0000);
+		status = status & 0x8000;
+	}
+
+	Rfm12bWriteCmd(temp);
+}
+
+
+
+
+
 void Rfm12bSendBuff(uint8_t *buff, uint8_t bytesNb)
 {
+//	dziala tylko z komenda rfSend zaimportowana z innego modulu
 	WriteCmd(0x0000);
 	rfSend(0xAA); // PREAMBLE
 	rfSend(0xAA);

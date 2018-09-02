@@ -173,6 +173,8 @@ uint16_t RFM12B_RDSTATUS(void)
 	return(Result);
 }
 
+
+
 void RFM12B_SWITCH_TO_RX(void)
 {
 	//RFM12B_WriteCMD(0x8208);

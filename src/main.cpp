@@ -11,10 +11,8 @@
 #include "gpio.h"
 #include "platform.h"
 
-#include "rfm12b.h"
-#include "rfm12bMCK.h"
 
-#include "rfm12bAM.h"
+
 
 #include "__rfm12b.h"
 

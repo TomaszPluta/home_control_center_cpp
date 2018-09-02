@@ -18,8 +18,8 @@ extern "C" {
 
 
 /* SPI CS LOW and High should be declared in platform layer file */
-#define NSEL_RFM12_LOW
-#define NSEL_RFM12_HIGH
+//#define NSEL_RFM12_LOW
+//#define NSEL_RFM12_HIGH
 
 
  __attribute__((weak)) void Rfm12bSpiInit(void);

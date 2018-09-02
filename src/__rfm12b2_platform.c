@@ -9,8 +9,6 @@
 
 
 
-#define NSEL_RFM12_LOW              GPIO_ResetBits(GPIOB, GPIO_Pin_1);
-#define NSEL_RFM12_HIGH             GPIO_SetBits(GPIOB, GPIO_Pin_1);
 
 
 
