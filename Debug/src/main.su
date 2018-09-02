@@ -1,9 +1,7 @@
-main.cpp:33:5:int mqtt_net_disconnect_cb(void*)	16	static
-main.cpp:39:14:void gpio_init()	16	static
-main.cpp:58:5:int broker_conn(void*, sockaddr_t*)	16	static
-main.cpp:62:5:int broker_send(void*, sockaddr_t*, const uint8_t*, uint16_t)	24	static
-main.cpp:68:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
-main.cpp:84:5:int broker_discon(void*, sockaddr_t*)	16	static
-main.cpp:92:6:void RFM12B_GPIO_Init()	40	static
-main.cpp:149:10:uint16_t SpiTransfer(uint16_t)	16	static
-main.cpp:168:5:int main()	24	static
+main.cpp:40:5:int mqtt_net_disconnect_cb(void*)	16	static
+main.cpp:46:14:void gpio_init()	16	static
+main.cpp:65:5:int broker_conn(void*, sockaddr_t*)	16	static
+main.cpp:69:5:int broker_send(void*, sockaddr_t*, const uint8_t*, uint16_t)	24	static
+main.cpp:75:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
+main.cpp:91:5:int broker_discon(void*, sockaddr_t*)	16	static
+main.cpp:175:5:int main()	56	static

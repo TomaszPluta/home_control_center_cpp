@@ -30,6 +30,8 @@ void Rfm12bRx (void);
 void Rfm12bSend (void);
 
 
+void Rfm_init(void);
+
 
 #ifdef __cplusplus
 }

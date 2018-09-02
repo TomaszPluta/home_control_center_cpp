@@ -16,6 +16,10 @@
 
 #include "rfm12bAM.h"
 
+#include "__rfm12b.h"
+
+
+
 
 volatile static int debug_var;
 uint8_t temp;
@@ -177,13 +181,12 @@ int main(){
 	 	SetGpioAsInFloating(LOG_UART_PORT, LOG_UART_PIN_RX);
 	 	EnableUart(USART1);
 
-		RFM12B_GPIO_Init();
+//		RFM12B_GPIO_Init();
 
+	 	Rfm12bInit();
 
-		//RFM12B_TXInit();
-
-
-		rfInitAM();
+//
+//		rfInitAM();
 
 
 
@@ -191,7 +194,11 @@ int main(){
 
 	 	while (1){
 
-	 		rfSendString("helloWorld");
+	 		uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
+
+
+	 		//Rfm12bSendBuff("helloWorld1helloWorld2helloWorld3");
+	 		Rfm12bSendBuff(buff, 30);
 	 		_delay_ms(500);
 
 //	 		uint8_t buff[] = "helloworld";
