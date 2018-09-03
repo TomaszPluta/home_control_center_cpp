@@ -238,3 +238,13 @@ unsigned char rfm12bRecv() {
 
 
 
+void rfm12bSwitchRx(void)
+{
+	RFM12B_WriteCMD(0x8299);
+}
+
+void rfm12bSwitchTx(void)
+{
+	RFM12B_WriteCMD(0x8239);
+}
+
