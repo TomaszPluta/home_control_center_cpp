@@ -14,8 +14,8 @@ extern "C" {
 #include "stdint.h"
 #include "stm32f10x.h"
 
-#ifndef RFM12B_H_
-#define RFM12B_H_
+#ifndef RFM12B_PLATFORM_H_
+#define RFM12B_PLATFORM_H_
 
 
 #define NSEL_RFM12_LOW              GPIO_ResetBits(GPIOB, GPIO_Pin_1);
@@ -31,4 +31,4 @@ uint16_t Rfm12bWriteCmd( uint16_t cmd );
 }
 #endif
 
-#endif /* RFM12B_H_ */
+#endif /* RFM12B_PLATFORM_H_ */
