@@ -109,18 +109,28 @@ int main(){
 		rfm12bSwitchTx();
 //
 
-
+		SetGpioAsInPullUp(GPIOB, 11);
 
 
 
 	 	while (1){
 
-	 		uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
+
+	 		dodac przerwania od rfm
 
 
-	 		//Rfm12bSendBuff("helloWorld1helloWorld2helloWorld3");
-	 		Rfm12bSendBuff(buff, 30);
-	 		_delay_ms(500);
+	 		  if (!(GPIOB->IDR & (1<<11))){
+
+	 			  rfm12bSwitchTx();
+	 			  _delay_ms(150);
+
+	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
+	 			  Rfm12bSendBuff(buff, 30);
+	 			  _delay_ms(50);
+
+
+	 		  }
+
 
 //	 		uint8_t buff[] = "helloworld";
 //	 		RFM12B_SendData(buff, 10);

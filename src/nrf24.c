@@ -15,16 +15,16 @@
 #include <string.h>
 uint8_t payload_len;
 
-
-void _delay_ms(int n) {
-
-	int i, j;
-	j= n*1000;
-	while(j--) {
-		i=2;
-		while(i--);
-	}
-}
+//
+//void _delay_ms(int n) {
+//
+//	int i, j;
+//	j= n*1000;
+//	while(j--) {
+//		i=2;
+//		while(i--);
+//	}
+//}
 
 
 

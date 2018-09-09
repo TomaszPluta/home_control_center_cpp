@@ -26,6 +26,7 @@ void SetGpioAsInFloating (GPIO_TypeDef * gpioPort, uint8_t pinNb);
 
 void SetGpioAsOutAltPushPUll (GPIO_TypeDef * gpioPort, uint8_t pinNb);
 
+void SetGpioAsInPullUp (GPIO_TypeDef * gpioPort, uint8_t pinNb);
 
 void SetGpioAsOutput(GPIO_TypeDef * gpioPort, uint8_t pinNb);
 

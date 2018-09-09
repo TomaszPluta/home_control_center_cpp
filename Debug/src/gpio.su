@@ -1,6 +1,10 @@
-gpio.c:22:6:EnableGpioClk	16	static
-gpio.c:34:6:SetGpioAsInput	16	static
-gpio.c:43:6:SetGpioAsInFloating	16	static
-gpio.c:56:6:SetGpioAsOutAltPushPUll	16	static
-gpio.c:75:6:SetGpioAsOutput	16	static
-gpio.c:84:6:IsGpioHigh	16	static
+core_cm3.h:930:22:NVIC_EnableIRQ	16	static
+gpio.c:25:11:EnableGpioClk	16	static
+gpio.c:37:11:SetGpioAsInput	16	static
+gpio.c:46:11:SetGpioAsInFloating	16	static
+gpio.c:62:11:SetGpioAsInPullUp	16	static
+gpio.c:80:11:SetGpioAsOutAltPushPUll	16	static
+gpio.c:99:11:SetGpioAsOutput	16	static
+gpio.c:108:11:IsGpioHigh	16	static
+gpio.c:114:11:EnableExti	16	static
+gpio.c:133:11:_delay_ms	24	static

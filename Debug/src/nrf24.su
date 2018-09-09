@@ -1,4 +1,3 @@
-nrf24.c:19:6:_delay_ms	24	static
 nrf24.c:31:10:calculateCRC16	24	static
 nrf24.c:44:6:l3_send_packet	56	static
 nrf24.c:78:10:l3_receive_packet	272	static
