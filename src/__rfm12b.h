@@ -37,6 +37,7 @@ extern "C" {
 
 void Rfm12bInitNode();
 void rfm12bSwitchTx(void);
+void rfm12bSwitchRx(void);
 
 void Rfm12bInit(void);
 void Rfm12bSendByte(uint8_t byte);

@@ -12,8 +12,6 @@
 #include "platform.h"
 
 
-
-
 #include "__rfm12b.h"
 
 
@@ -116,17 +114,18 @@ int main(){
 	 	while (1){
 
 
-	 		dodac przerwania od rfm
 
 
 	 		  if (!(GPIOB->IDR & (1<<11))){
 
 	 			  rfm12bSwitchTx();
-	 			  _delay_ms(150);
+	 			  _delay_ms(50);
 
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
 	 			  Rfm12bSendBuff(buff, 30);
-	 			  _delay_ms(50);
+	 			  _delay_ms(250);
+	 			 rfm12bSwitchRx();
+	 			  _delay_ms(20);
 
 
 	 		  }
