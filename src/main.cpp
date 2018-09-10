@@ -122,7 +122,8 @@ int main(){
 	 			  _delay_ms(50);
 
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
-	 			  Rfm12bSendBuff(buff, 30);
+	 			//  Rfm12bSendBuff(buff, 30);
+	 			 RF12_TXPACKET(buff, 30);
 	 			  _delay_ms(250);
 	 			 rfm12bSwitchRx();
 	 			  _delay_ms(20);

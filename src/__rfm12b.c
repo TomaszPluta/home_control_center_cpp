@@ -51,7 +51,7 @@ void Rfm12bSendByte(uint8_t byte)
 	uint16_t cmdAndData = 0xB800;
 	cmdAndData |= byte;
 
-	while(!status)
+	while(!status)// brakuje chyba tu inicjalizacji statusu
 	{
 		status = Rfm12bWriteCmd(0x0000);
 		status = status & 0x8000;
@@ -97,6 +97,43 @@ void Rfm12bSendBuff(uint8_t *buff, uint8_t bytesNb)
 		rfSend(buff[i]);		//wyslij kolejny znak z bufora
 	}
 }
+
+
+
+void RF12_SCAN(void)
+{
+	Rfm12bWriteCmd(0x0000);
+	Rfm12bWriteCmd(0x82C9);
+	Rfm12bWriteCmd(0xCA81);
+	Rfm12bWriteCmd(0xCA83);
+}
+
+
+void RF12_TXPACKET(uint8_t *buff, uint8_t bytesNb)
+{
+
+	char i;
+	WriteCmd(0x0000);
+	rfSend(0x0000);//read status register
+	rfSend(0x8239);//!er,!ebb,ET,ES,EX,!eb,!ew,DC
+	rfSend(0xAA);//PREAMBLE
+	rfSend(0xAA);//PREAMBLE
+	rfSend(0xAA);//PREAMBLE
+	rfSend(0x2D);//SYNC HI BYTE
+	rfSend(0xD4);//SYNC LOW BYTE
+	for(i = 0; i < bytesNb; i++)
+	{
+	//	Rfm12bSendByte(buff[i]);
+		rfSend(buff[i]);
+	}
+	rfSend(0xAA);
+	rfSend(0xAA);
+	RF12_SCAN();
+}
+
+
+
+
 
 
 
