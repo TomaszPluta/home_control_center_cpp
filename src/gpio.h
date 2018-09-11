@@ -30,6 +30,9 @@ void SetGpioAsInPullUp (GPIO_TypeDef * gpioPort, uint8_t pinNb);
 
 void SetGpioAsOutput(GPIO_TypeDef * gpioPort, uint8_t pinNb);
 
+
+ void EnableExti(GPIO_TypeDef * gpioPort, uint8_t pinNb, bool rise, bool fall);
+
 #ifdef __cplusplus
 }
 #endif

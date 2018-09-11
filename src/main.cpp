@@ -13,7 +13,7 @@
 
 
 #include "__rfm12b.h"
-
+#include "__rfm12b_platform.h"
 
 
 
@@ -28,8 +28,36 @@ uint8_t rx_address[5] = {0xE7,0xE7,0xE7,0xE7,0xE7};
 /* ----------------------------------------------------------- */
 
 
+volatile uint8_t rxBuff[1024];
+volatile uint16_t pos;
+
+extern "C" void EXTI9_5_IRQHandler (void);
 
 
+void EXTI9_5_IRQHandler (void){
+	EXTI_ClearITPendingBit(EXTI_Line5);
+
+
+
+
+		uint16_t status = Rfm12bWriteCmd(0x0000);
+
+		if (status & RFM12_STATUS_FFIT ){
+			uint8_t rx = rfm12bReadFifo();
+				if (pos <1024){
+					rxBuff[pos] = rx;
+					pos++;
+					if (pos==30){
+						 GPIOC->ODR ^= GPIO_Pin_13;
+						asm volatile ("nop");
+						rfm12bFifoReset();
+					 	pos =0;
+
+					}
+			}
+		}
+
+}
 
 
 
@@ -107,6 +135,9 @@ int main(){
 		rfm12bSwitchTx();
 //
 
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+		EnableExti(GPIOB, 5, false, true);
+		SetGpioAsInPullUp(GPIOB, 5);
 		SetGpioAsInPullUp(GPIOB, 11);
 
 
@@ -118,12 +149,15 @@ int main(){
 
 	 		  if (!(GPIOB->IDR & (1<<11))){
 
+	 			 NVIC_DisableIRQ(EXTI9_5_IRQn);
 	 			  rfm12bSwitchTx();
+
 	 			  _delay_ms(50);
 
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
 	 			//  Rfm12bSendBuff(buff, 30);
 	 			 RF12_TXPACKET(buff, 30);
+	 			 NVIC_EnableIRQ(EXTI9_5_IRQn);
 	 			  _delay_ms(250);
 	 			 rfm12bSwitchRx();
 	 			  _delay_ms(20);

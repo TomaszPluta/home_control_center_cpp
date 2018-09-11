@@ -46,6 +46,9 @@ void rfm12bFifoReset(void);
 void rfm12bWaitForData(void);
 uint8_t rfm12bRecv(void);
 
+uint8_t rfm12bReadFifo(void);
+
+
 void RF12_TXPACKET(uint8_t *buff, uint8_t bytesNb);
 
 #ifdef __cplusplus
