@@ -122,23 +122,37 @@ int broker_discon(void *context, sockaddr_t * sockaddr){
 int main(){
 
 
+ 	EnableGpioClk(LOG_UART_PORT);
+ 	SetGpioAsOutAltPushPUll(LOG_UART_PORT, LOG_UART_PIN_TX);
+ 	SetGpioAsInFloating(LOG_UART_PORT, LOG_UART_PIN_RX);
+ 	EnableUart(USART1);
 
-	 	EnableGpioClk(LOG_UART_PORT);
-	 	SetGpioAsOutAltPushPUll(LOG_UART_PORT, LOG_UART_PIN_TX);
-	 	SetGpioAsInFloating(LOG_UART_PORT, LOG_UART_PIN_RX);
-	 	EnableUart(USART1);
 
-//		RFM12B_GPIO_Init();
 
-	 	Rfm12bInit();
-	// 	Rfm12bInitNode();
-		rfm12bSwitchTx();
-//
 
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
-		EnableExti(GPIOB, 5, false, true);
-		SetGpioAsInPullUp(GPIOB, 5);
-		SetGpioAsInPullUp(GPIOB, 11);
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+ 	GPIO_InitTypeDef PORT;
+ 	PORT.GPIO_Mode = GPIO_Mode_Out_PP;
+ 	PORT.GPIO_Speed = GPIO_Speed_2MHz;
+ 	PORT.GPIO_Pin = GPIO_Pin_13;
+ 	GPIO_Init(GPIOC, &PORT);
+ 	GPIOC->ODR |= GPIO_Pin_13;
+
+
+
+
+ 	Rfm12bInit();
+ 	_delay_ms(1000);	//wymagane opoznienie
+ 	  Rfm12bWriteCmd(0x0000);
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+ 	EnableExti(GPIOB, 5, false, true);
+ 	SetGpioAsInPullUp(GPIOB, 5);
+	SetGpioAsInPullUp(GPIOB, 11);
+
+ 	rfm12bFifoReset();
+ 	rfm12bSwitchRx();
+
+
 
 
 
@@ -152,15 +166,16 @@ int main(){
 	 			 NVIC_DisableIRQ(EXTI9_5_IRQn);
 	 			  rfm12bSwitchTx();
 
-	 			  _delay_ms(50);
+	 			//  _delay_ms(50);
 
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
 	 			//  Rfm12bSendBuff(buff, 30);
 	 			 RF12_TXPACKET(buff, 30);
+
 	 			 NVIC_EnableIRQ(EXTI9_5_IRQn);
-	 			  _delay_ms(250);
-	 			 rfm12bSwitchRx();
-	 			  _delay_ms(20);
+	 			rfm12bSwitchRx();
+	 			 _delay_ms(250);
+	 		//	  _delay_ms(20);
 
 
 	 		  }
