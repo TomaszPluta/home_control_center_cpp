@@ -7,6 +7,8 @@
 
 #include "__rfm12b.h"
 #include "__rfm12b_platform.h"
+#include "stdint.h"
+#include "stdbool.h"
 
 
 /* SPI CS LOW and High should be declared in platform layer file
@@ -14,15 +16,15 @@
 #define NSEL_RFM12_HIGH
 */
 
-
- __attribute__((weak)) void Rfm12bSpiInit(void) {
-	 ; /* Function for SPI init should be implemented in platform layer file*/
- }
-
- __attribute__((weak)) void WriteCmd( uint16_t CMD )
-{
-	 ; /* Function for sending 16 bits by SPI should be implemented in platform layer file*/
-}
+//
+// __attribute__((weak)) void Rfm12bSpiInit(void) {
+//	 ; /* Function for SPI init should be implemented in platform layer file*/
+// }
+//
+// __attribute__((weak)) void WriteCmd( uint16_t CMD )
+//{
+//	 ; /* Function for sending 16 bits by SPI should be implemented in platform layer file*/
+//}
 
 void Rfm12bInit() {
   Rfm12bSpiInit();
@@ -65,10 +67,11 @@ void Rfm12bSendByte(uint8_t byte)
 
 void rfSend(unsigned char data)
 {
-	uint16_t temp=0xB800, status=0x0000;
+	uint16_t temp=0xB800;
+	uint16_t status=0x0000;
 	temp|=data;
 
-	while(  !status )
+	if (  !status )
 	{
 		//status = RFM12B_RDSTATUS();
 		status = Rfm12bWriteCmd(0x0000);
@@ -80,7 +83,28 @@ void rfSend(unsigned char data)
 
 
 
+void Rfm12bPrepareSending (rfm12BSendBuff_t * sendBuff, uint8_t *data, uint8_t dataNb){
+	sendBuff->data[0] = 0xAA;
+	sendBuff->data[1] = 0xAA;
+	sendBuff->data[2] = 0x2D;
+	sendBuff->data[3] = 0xD4;
+	memcpy(&sendBuff->data[4], data, dataNb);
+	sendBuff->pos =0;
+	const uint8_t preample_len = 4;
+	sendBuff->dataNb = dataNb + preample_len;
+}
 
+void Rfm12bTranssmitSeqByte(rfm12BSendBuff_t * sendBuff){
+	uint16_t cmd = 0xB800;
+	uint8_t data = sendBuff->data[sendBuff->pos++];
+	Rfm12bWriteCmd(cmd | data);
+}
+
+void Rfm12bMantainSending(rfm12BSendBuff_t * sendBuff){
+	 if (sendBuff->pos < sendBuff->dataNb){
+		 Rfm12bTranssmitSeqByte(sendBuff);
+	 }
+}
 
 void Rfm12bSendBuff(uint8_t *buff, uint8_t bytesNb)
 {
@@ -114,8 +138,6 @@ void RF12_TXPACKET(uint8_t *buff, uint8_t bytesNb)
 
 	char i;
 	WriteCmd(0x0000);
-	rfSend(0x0000);//read status register
-	rfSend(0x8239);//!er,!ebb,ET,ES,EX,!eb,!ew,DC
 	rfSend(0xAA);//PREAMBLE
 	rfSend(0xAA);//PREAMBLE
 	rfSend(0xAA);//PREAMBLE
@@ -130,6 +152,7 @@ void RF12_TXPACKET(uint8_t *buff, uint8_t bytesNb)
 	rfSend(0xAA);
 	RF12_SCAN();
 }
+
 
 
 

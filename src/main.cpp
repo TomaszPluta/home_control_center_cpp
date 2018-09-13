@@ -27,12 +27,13 @@ uint8_t tx_address[5] = {0xD7,0xD7,0xD7,0xD7,0xD7};
 uint8_t rx_address[5] = {0xE7,0xE7,0xE7,0xE7,0xE7};
 /* ----------------------------------------------------------- */
 
-
+rfm12BSendBuff_t sendBuff;
 volatile uint8_t rxBuff[1024];
 volatile uint16_t pos;
 
 extern "C" void EXTI9_5_IRQHandler (void);
 
+bool transmit;
 
 void EXTI9_5_IRQHandler (void){
 	EXTI_ClearITPendingBit(EXTI_Line5);
@@ -43,7 +44,11 @@ void EXTI9_5_IRQHandler (void){
 		uint16_t status = Rfm12bWriteCmd(0x0000);
 
 		if (status & RFM12_STATUS_FFIT ){
-			uint8_t rx = rfm12bReadFifo();
+			if (transmit){
+				Rfm12bMantainSending(&sendBuff);
+			}
+			else{
+				uint8_t rx = rfm12bReadFifo();
 				if (pos <1024){
 					rxBuff[pos] = rx;
 					pos++;
@@ -54,8 +59,10 @@ void EXTI9_5_IRQHandler (void){
 					 	pos =0;
 
 					}
+				}
 			}
 		}
+
 
 }
 
@@ -143,7 +150,7 @@ int main(){
 
  	Rfm12bInit();
  	_delay_ms(1000);	//wymagane opoznienie
- 	  Rfm12bWriteCmd(0x0000);
+ 	uint8_t sst =   Rfm12bWriteCmd(0x0000);
  	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
  	EnableExti(GPIOB, 5, false, true);
  	SetGpioAsInPullUp(GPIOB, 5);
@@ -154,7 +161,7 @@ int main(){
 
 
 
-
+ 	  NVIC_DisableIRQ(EXTI9_5_IRQn);
 
 	 	while (1){
 
@@ -163,75 +170,26 @@ int main(){
 
 	 		  if (!(GPIOB->IDR & (1<<11))){
 
-	 			 NVIC_DisableIRQ(EXTI9_5_IRQn);
+//	 			  NVIC_DisableIRQ(EXTI9_5_IRQn);
+	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
+	 			  Rfm12bPrepareSending(&sendBuff, buff, 30);
+	 			  transmit = true;
 	 			  rfm12bSwitchTx();
+	 			 NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 	 			//  _delay_ms(50);
 
-	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
 	 			//  Rfm12bSendBuff(buff, 30);
-	 			 RF12_TXPACKET(buff, 30);
+	 			 //RF12_TXPACKET(buff, 30);
 
-	 			 NVIC_EnableIRQ(EXTI9_5_IRQn);
-	 			rfm12bSwitchRx();
+
+//	 			 NVIC_EnableIRQ(EXTI9_5_IRQn);
+//	 			rfm12bSwitchRx();
 	 			 _delay_ms(250);
 	 		//	  _delay_ms(20);
 
 
 	 		  }
-
-
-//	 		uint8_t buff[] = "helloworld";
-//	 		RFM12B_SendData(buff, 10);
-//			_delay_ms(500);
-//	 		uint16_t status = RFM12B_RDSTATUS();
-//
-//
-//	 		if (status & RFM12_STATUS_RGIT ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_FFIT ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_POR ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_RGUR ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_FFOV ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_WKUP ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_EXT ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_LBD ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_FFEM ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_ATS ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_RSSI ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_DQD ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_CRL ){
-//	 			asm volatile ("nop");
-//	 		}
-//	 		if (status & RFM12_STATUS_ATGL ){
-//	 			asm volatile ("nop");
-//	 		}
-
-
-//			_delay_ms(100);
 
 
 	 	}

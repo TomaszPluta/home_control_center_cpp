@@ -31,8 +31,15 @@ extern "C" {
 #define RFM12_STATUS_RSSI 	0x0100
 #define RFM12_STATUS_DQD 	0x0080
 #define RFM12_STATUS_CRL 	0x0040
-#define RFM12_STATUS_ATGL	 0x0020
+#define RFM12_STATUS_ATGL	0x0020
 
+#define MAX_DATA_T_SEND 	256
+
+typedef struct buff{
+	uint8_t data[MAX_DATA_T_SEND];
+	uint8_t pos;
+	uint8_t dataNb;
+}rfm12BSendBuff_t;
 
 
 void Rfm12bInitNode();
@@ -47,6 +54,15 @@ void rfm12bWaitForData(void);
 uint8_t rfm12bRecv(void);
 
 uint8_t rfm12bReadFifo(void);
+
+
+
+void Rfm12bPrepareSending (rfm12BSendBuff_t * sendBuff, uint8_t *data, uint8_t dataNb);
+void Rfm12bTranssmitSeqByte(rfm12BSendBuff_t * sendBuff);
+void Rfm12bMantainSending(rfm12BSendBuff_t * sendBuff);
+
+
+
 
 
 void RF12_TXPACKET(uint8_t *buff, uint8_t bytesNb);
