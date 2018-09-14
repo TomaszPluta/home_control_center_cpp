@@ -86,7 +86,7 @@ volatile rfm12b_state rfm12bStateIRQ = receive;
 
 
 void Rfm12bStartSending (rfm12bBuff_t * sendBuff, uint8_t *data, uint8_t dataNb){
-	rfm12bStateIRQ == transmit;
+
 	sendBuff->data[0] = 0xAA;
 	sendBuff->data[1] = 0x2D;
 	sendBuff->data[2] = 0xD4;
@@ -94,9 +94,9 @@ void Rfm12bStartSending (rfm12bBuff_t * sendBuff, uint8_t *data, uint8_t dataNb)
 	sendBuff->pos =0;
 	const uint8_t preample_len = 4;
 	sendBuff->dataNb = dataNb + preample_len;
-    rfm12bStateIRQ = transmit;
-    uint16_t status = Rfm12bWriteCmd(0x0000);//??
+ //   uint16_t status = Rfm12bWriteCmd(0x0000);//??
     rfm12bSwitchTx();
+    rfm12bStateIRQ = transmit;
 	rfSend(0xAA);
 }
 
