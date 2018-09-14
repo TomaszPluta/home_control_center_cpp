@@ -17,7 +17,6 @@
 
 
 
-volatile static int debug_var;
 uint8_t temp;
 uint8_t q = 0;
 uint8_t data_array[32];
@@ -27,42 +26,18 @@ uint8_t tx_address[5] = {0xD7,0xD7,0xD7,0xD7,0xD7};
 uint8_t rx_address[5] = {0xE7,0xE7,0xE7,0xE7,0xE7};
 /* ----------------------------------------------------------- */
 
-rfm12BSendBuff_t sendBuff;
+rfm12bBuff_t sendBuffIRQ;
 volatile uint8_t rxBuff[1024];
 volatile uint16_t pos;
 
 extern "C" void EXTI9_5_IRQHandler (void);
 
-bool transmit;
+
 
 void EXTI9_5_IRQHandler (void){
 	EXTI_ClearITPendingBit(EXTI_Line5);
 
-
-
-
-		uint16_t status = Rfm12bWriteCmd(0x0000);
-
-		if (status & RFM12_STATUS_FFIT ){
-			if (transmit){
-				Rfm12bMantainSending(&sendBuff);
-			}
-			else{
-				uint8_t rx = rfm12bReadFifo();
-				if (pos <1024){
-					rxBuff[pos] = rx;
-					pos++;
-					if (pos==30){
-						 GPIOC->ODR ^= GPIO_Pin_13;
-						asm volatile ("nop");
-						rfm12bFifoReset();
-					 	pos =0;
-
-					}
-				}
-			}
-		}
-
+	Rfm12bIrqCallback (&sendBuffIRQ);
 
 }
 
@@ -159,9 +134,9 @@ int main(){
  	rfm12bFifoReset();
  	rfm12bSwitchRx();
 
+ 	 NVIC_EnableIRQ(EXTI9_5_IRQn);
 
-
- 	  NVIC_DisableIRQ(EXTI9_5_IRQn);
+ 	//  NVIC_DisableIRQ(EXTI9_5_IRQn);
 
 	 	while (1){
 
@@ -172,10 +147,12 @@ int main(){
 
 //	 			  NVIC_DisableIRQ(EXTI9_5_IRQn);
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
-	 			  Rfm12bPrepareSending(&sendBuff, buff, 30);
-	 			  transmit = true;
-	 			  rfm12bSwitchTx();
-	 			 NVIC_EnableIRQ(EXTI9_5_IRQn);
+	 			  Rfm12bStartSending(&sendBuffIRQ, buff, 30);
+
+//	 			  uint16_t status = Rfm12bWriteCmd(0x0000);//??
+//	 			  rfm12bSwitchTx();
+
+	 		//	 NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 	 			//  _delay_ms(50);
 

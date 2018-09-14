@@ -81,30 +81,92 @@ void rfSend(unsigned char data)
 	Rfm12bWriteCmd(temp);
 }
 
+volatile rfm12b_state rfm12bStateIRQ = receive;
 
 
-void Rfm12bPrepareSending (rfm12BSendBuff_t * sendBuff, uint8_t *data, uint8_t dataNb){
+
+void Rfm12bStartSending (rfm12bBuff_t * sendBuff, uint8_t *data, uint8_t dataNb){
+	rfm12bStateIRQ == transmit;
 	sendBuff->data[0] = 0xAA;
-	sendBuff->data[1] = 0xAA;
-	sendBuff->data[2] = 0x2D;
-	sendBuff->data[3] = 0xD4;
-	memcpy(&sendBuff->data[4], data, dataNb);
+	sendBuff->data[1] = 0x2D;
+	sendBuff->data[2] = 0xD4;
+	memcpy(&sendBuff->data[3], data, dataNb);
 	sendBuff->pos =0;
 	const uint8_t preample_len = 4;
 	sendBuff->dataNb = dataNb + preample_len;
+    rfm12bStateIRQ = transmit;
+    uint16_t status = Rfm12bWriteCmd(0x0000);//??
+    rfm12bSwitchTx();
+	rfSend(0xAA);
 }
 
-void Rfm12bTranssmitSeqByte(rfm12BSendBuff_t * sendBuff){
+
+
+void Rfm12bTranssmitSeqByte(rfm12bBuff_t * sendBuff){
 	uint16_t cmd = 0xB800;
 	uint8_t data = sendBuff->data[sendBuff->pos++];
 	Rfm12bWriteCmd(cmd | data);
 }
 
-void Rfm12bMantainSending(rfm12BSendBuff_t * sendBuff){
+void Rfm12bMantainSending(rfm12bBuff_t * sendBuff){
 	 if (sendBuff->pos < sendBuff->dataNb){
 		 Rfm12bTranssmitSeqByte(sendBuff);
+	 } else{
+		 rfm12bStateIRQ = receive;
 	 }
 }
+//
+//void Rfm12bMantainreceiving(rfm12bBuff_t * rxBuff){
+//	uint8_t rx = rfm12bReadFifo();
+//	if (pos <1024){
+//		rxBuff->data = rx;
+//		pos++;
+//		if (pos==30){
+//			GPIOC->ODR ^= GPIO_Pin_13;
+//			asm volatile ("nop");
+//			rfm12bFifoReset();
+//			pos =0;
+//		}
+//	}
+//}
+
+
+volatile uint8_t rxBuff[1024];
+volatile uint16_t pos;
+
+void Rfm12bMantainreceiving(){
+	uint8_t rx = rfm12bReadFifo();
+	if (pos <1024){
+		rxBuff[pos] = rx;
+		pos++;
+		if (pos==30){
+			GPIOC->ODR ^= GPIO_Pin_13;
+			asm volatile ("nop");
+			rfm12bFifoReset();
+			pos =0;
+		}
+	}
+}
+
+
+void Rfm12bIrqCallback (rfm12bBuff_t * sendBuff){
+	uint16_t status = Rfm12bWriteCmd(0x0000);
+
+	if (status & RFM12_STATUS_FFIT ){
+		if (rfm12bStateIRQ == transmit){
+			Rfm12bMantainSending(sendBuff);
+		}
+		else{
+			Rfm12bMantainreceiving();
+		}
+	}
+}
+
+
+
+
+
+
 
 void Rfm12bSendBuff(uint8_t *buff, uint8_t bytesNb)
 {

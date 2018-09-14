@@ -39,7 +39,9 @@ typedef struct buff{
 	uint8_t data[MAX_DATA_T_SEND];
 	uint8_t pos;
 	uint8_t dataNb;
-}rfm12BSendBuff_t;
+}rfm12bBuff_t;
+
+void rfSend(unsigned char data);
 
 
 void Rfm12bInitNode();
@@ -57,11 +59,15 @@ uint8_t rfm12bReadFifo(void);
 
 
 
-void Rfm12bPrepareSending (rfm12BSendBuff_t * sendBuff, uint8_t *data, uint8_t dataNb);
-void Rfm12bTranssmitSeqByte(rfm12BSendBuff_t * sendBuff);
-void Rfm12bMantainSending(rfm12BSendBuff_t * sendBuff);
+void Rfm12bStartSending (rfm12bBuff_t * sendBuff, uint8_t *data, uint8_t dataNb);
+void Rfm12bTranssmitSeqByte(rfm12bBuff_t * sendBuff);
+void Rfm12bMantainSending(rfm12bBuff_t * sendBuff);
+void Rfm12bIrqCallback (rfm12bBuff_t * sendBuff);
 
-
+typedef enum {
+	transmit,
+	receive
+}rfm12b_state;
 
 
 
