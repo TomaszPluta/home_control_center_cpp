@@ -31,13 +31,13 @@ volatile uint8_t rxBuff[1024];
 volatile uint16_t pos;
 
 extern "C" void EXTI9_5_IRQHandler (void);
-
+volatile rfm12bObj_t rfm12bObj;
 
 
 void EXTI9_5_IRQHandler (void){
 	EXTI_ClearITPendingBit(EXTI_Line5);
 
-	Rfm12bIrqCallback (&sendBuffIRQ);
+	Rfm12bIrqCallback (&rfm12bObj);
 
 }
 
@@ -136,7 +136,8 @@ int main(){
 
  	 NVIC_EnableIRQ(EXTI9_5_IRQn);
 
- 	//  NVIC_DisableIRQ(EXTI9_5_IRQn);
+
+ 	Rrm12bObjInit (&rfm12bObj);
 
 	 	while (1){
 
@@ -145,25 +146,9 @@ int main(){
 
 	 		  if (!(GPIOB->IDR & (1<<11))){
 
-//	 			  NVIC_DisableIRQ(EXTI9_5_IRQn);
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
-	 			  Rfm12bStartSending(&sendBuffIRQ, buff, 30);
-
-//	 			  uint16_t status = Rfm12bWriteCmd(0x0000);//??
-//	 			  rfm12bSwitchTx();
-
-	 		//	 NVIC_EnableIRQ(EXTI9_5_IRQn);
-
-	 			//  _delay_ms(50);
-
-	 			//  Rfm12bSendBuff(buff, 30);
-	 			 //RF12_TXPACKET(buff, 30);
-
-
-//	 			 NVIC_EnableIRQ(EXTI9_5_IRQn);
-//	 			rfm12bSwitchRx();
+	 			  Rfm12bStartSending(&rfm12bObj, buff, 30);
 	 			 _delay_ms(250);
-	 		//	  _delay_ms(20);
 
 
 	 		  }

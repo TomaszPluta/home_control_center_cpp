@@ -67,8 +67,8 @@
 	 		 		gpioPort->ODR |= (1<<pinNb);
 
 	 		 	} else {
-	 		 		gpioPort->CRH &= ~(PIN_MODE_MSK<<(pinNb-8)*4);
-	 		 		gpioPort->CRH &= ~(PIN_CNF_MSK<<((pinNb-8)*4)+2);
+	 		 		gpioPort->CRH &= ~(PIN_MODE_MSK<<((pinNb-8)*4));
+	 		 		gpioPort->CRH &= ~(PIN_CNF_MSK<<(((pinNb-8)*4)+2));
 	 		 		gpioPort->CRH |= (PIN_CNF_PUSH_PULL<<(((pinNb-8)*4)+2));
 	 		 		gpioPort->ODR |=  (1<<pinNb);
 	 		 	}

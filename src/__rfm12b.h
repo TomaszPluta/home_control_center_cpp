@@ -33,15 +33,32 @@ extern "C" {
 #define RFM12_STATUS_CRL 	0x0040
 #define RFM12_STATUS_ATGL	0x0020
 
-#define MAX_DATA_T_SEND 	256
+#define RFM12_PREMBLE_LEN  	      (4)
+#define RFM12_MAX_FRAME_SIZE  	(256)
 
-typedef struct buff{
-	uint8_t data[MAX_DATA_T_SEND];
+
+typedef struct {
+	uint8_t data[RFM12_MAX_FRAME_SIZE];
 	uint8_t pos;
 	uint8_t dataNb;
 }rfm12bBuff_t;
 
-void rfSend(unsigned char data);
+typedef enum {
+	receive = 0,
+	transmit = 1
+}rfm12bState_t;
+
+
+
+typedef struct {
+	rfm12bBuff_t txBuff;
+	rfm12bBuff_t rxBuff;
+	rfm12bState_t state;
+}rfm12bObj_t;
+
+
+void Rrm12bObjInit (volatile rfm12bObj_t * rfm12bObj);
+
 
 
 void Rfm12bInitNode();
@@ -59,15 +76,8 @@ uint8_t rfm12bReadFifo(void);
 
 
 
-void Rfm12bStartSending (rfm12bBuff_t * sendBuff, uint8_t *data, uint8_t dataNb);
-void Rfm12bTranssmitSeqByte(rfm12bBuff_t * sendBuff);
-void Rfm12bMantainSending(rfm12bBuff_t * sendBuff);
-void Rfm12bIrqCallback (rfm12bBuff_t * sendBuff);
-
-typedef enum {
-	transmit,
-	receive
-}rfm12b_state;
+void Rfm12bStartSending (volatile rfm12bObj_t * rfm12bObj, uint8_t *data, uint8_t dataNb);
+void Rfm12bIrqCallback (volatile rfm12bObj_t * rfm12bObj);
 
 
 
