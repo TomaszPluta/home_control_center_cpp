@@ -141,11 +141,7 @@ int main(){
 
 	 	while (1){
 
-
-
-
 	 		  if (!(GPIOB->IDR & (1<<11))){
-
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
 	 			  Rfm12bStartSending(&rfm12bObj, buff, 30);
 	 			 _delay_ms(250);

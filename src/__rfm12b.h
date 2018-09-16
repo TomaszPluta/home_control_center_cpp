@@ -33,7 +33,7 @@ extern "C" {
 #define RFM12_STATUS_CRL 	0x0040
 #define RFM12_STATUS_ATGL	0x0020
 
-#define RFM12_PREMBLE_LEN  	      (4)
+#define RFM12_PREMBLE_LEN  	      (5)
 #define RFM12_MAX_FRAME_SIZE  	(256)
 
 
@@ -53,6 +53,7 @@ typedef enum {
 typedef struct {
 	rfm12bBuff_t txBuff;
 	rfm12bBuff_t rxBuff;
+	rfm12bBuff_t completedRxBuff;
 	rfm12bState_t state;
 }rfm12bObj_t;
 
@@ -75,6 +76,7 @@ uint8_t rfm12bRecv(void);
 uint8_t rfm12bReadFifo(void);
 
 
+void Rfm12bClearBuff (rfm12bBuff_t * rfm12bBuff);
 
 void Rfm12bStartSending (volatile rfm12bObj_t * rfm12bObj, uint8_t *data, uint8_t dataNb);
 void Rfm12bIrqCallback (volatile rfm12bObj_t * rfm12bObj);
