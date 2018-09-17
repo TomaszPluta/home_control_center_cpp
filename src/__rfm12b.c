@@ -9,6 +9,7 @@
 #include "__rfm12b_platform.h"
 #include "stdint.h"
 #include "stdbool.h"
+#include "string.h"
 
 
 /* SPI CS LOW and High should be declared in platform layer file
@@ -76,9 +77,9 @@ static void rfSend(uint8_t data)
 
 
 
-void Rfm12bClearBuff (rfm12bBuff_t * rfm12bBuff){
-	memset(rfm12bBuff, 0, sizeof (rfm12bBuff_t));
-}
+//void Rfm12bClearBuff (rfm12bBuff_t * rfm12bBuff){
+//	memset(rfm12bBuff, 0, sizeof (rfm12bBuff_t));
+//}
 
 void Rfm12bStartSending (volatile rfm12bObj_t * rfm12b, uint8_t *data, uint8_t dataNb){
 
@@ -111,19 +112,28 @@ void Rfm12bMantainSending(volatile rfm12bObj_t * rfm12b){
 	 }
 }
 
+static void Rfm12bMoveDataToCompletedBuff(volatile rfm12bObj_t * rfm12b){
+	memset(&rfm12b->completedRxBuff, 0, sizeof (rfm12bBuff_t));
+	memcpy(rfm12b->completedRxBuff.data,  &rfm12b->rxBuff.data[1], rfm12b->rxBuff.dataNb);
+	rfm12b->completedRxBuff.dataNb = rfm12b->rxBuff.dataNb;
+	memset(&rfm12b->rxBuff, 0, sizeof (rfm12bBuff_t));
+}
 
+static void Rfm12bresetRx(volatile rfm12bObj_t * rfm12b){
+	rfm12b->rxBuff.pos = 0;
+	rfm12bFifoReset();
+}
 
+//namieszane. przywrocic
 void Rfm12bMantainreceiving(volatile rfm12bObj_t * rfm12b){
 	uint8_t rxByte = rfm12bReadFifo();
 	if (rfm12b->rxBuff.pos < RFM12_MAX_FRAME_SIZE){
 		rfm12b->rxBuff.data[rfm12b->rxBuff.pos++] = rxByte;
 		rfm12b->rxBuff.dataNb =  rfm12b->rxBuff.data[0];
 		if (rfm12b->rxBuff.pos == rfm12b->rxBuff.dataNb){
-			memcpy(&rfm12b->completedRxBuff,  &rfm12b->rxBuff, sizeof(rfm12bBuff_t));
-			Rfm12bClearBuff(&rfm12b->rxBuff);
-			GPIOC->ODR ^= GPIO_Pin_13;
-			rfm12b->rxBuff.pos = 0;
-			rfm12bFifoReset();
+			Rfm12bMoveDataToCompletedBuff(rfm12b);
+			Rfm12bresetRx(rfm12b);
+			GPIOC->ODR ^= GPIO_Pin_13;//
 		}
 	}
 }

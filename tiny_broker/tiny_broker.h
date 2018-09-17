@@ -335,6 +335,7 @@ typedef struct {
 
 
 typedef struct{
+	void * context;
 	sockaddr_t rx_sockaddr;
 	uint8_t buf[MAX_FRAME_SIZE];
 	uint16_t buf_len;

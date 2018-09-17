@@ -1,4 +1,3 @@
-tiny_broker.c:30:6:broker_init_directly	24	static
 tiny_broker.c:43:6:broker_init_by_given_net	16	static
 tiny_broker.c:52:14:decode_pck_len	32	static
 tiny_broker.c:71:6:broker_receive	32	static

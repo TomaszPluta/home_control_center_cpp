@@ -72,26 +72,21 @@ int broker_conn(void *cntx, sockaddr_t * sockaddr){
 	return 1;
 }
 
-int broker_send(void *cntx, sockaddr_t * sockaddr, const uint8_t* buf, uint16_t buf_len){
-  	l3_send_packet (0, (uint8_t*) buf, buf_len);
-    _delay_ms(50);
-    return 1;
+int broker_send(void *cntx, sockaddr_t * sockaddr, const uint8_t* buff, uint16_t buffLen){
+	rfm12bObj_t * obj = (rfm12bObj_t*) cntx;
+	Rfm12bStartSending(obj, (uint8_t *)buff, buffLen);
+	return buffLen;
 }
 
 int broker_rec(void *cntx, sockaddr_t * sockaddr, uint8_t* buf, uint16_t  buf_len){
-	if(nrf24_dataReady())
-	{
-
-		nrf24_getData(data_array);
-		 uint16_t pcktLen = l3_receive_packet(data_array, buf, buf_len);
-		if (pcktLen){
-			//sockaddr->sin_addr = Mqtt_get_rx_address();
-			return true;
-			GPIOC->BRR = GPIO_Pin_13;
-		}
+	rfm12bObj_t * obj = (rfm12bObj_t*) cntx;
+	uint8_t byteNb = obj->completedRxBuff.dataNb;
+	if (byteNb > 0){
+		byteNb = (byteNb < buf_len) ? byteNb : buf_len;
+		memcpy (buf, (const void*) obj->completedRxBuff.data, byteNb);
 	}
-	_delay_ms(10);
-	return false;
+	obj->completedRxBuff.dataNb = 0;
+	return byteNb;
 }
 
 int broker_discon(void *context, sockaddr_t * sockaddr){
@@ -139,7 +134,27 @@ int main(){
 
  	Rrm12bObjInit (&rfm12bObj);
 
+
+
+	broker_net_t broker_net;
+	broker_net.context = (void*) &rfm12bObj;
+	broker_net.connect = broker_conn;
+	broker_net.send = broker_send;
+	broker_net.receive = broker_rec;
+	broker_net.disconnect = broker_discon;
+	broker_t broker;
+	broker_init_by_given_net(&broker, &broker_net);
+
+	sockaddr_t sockaddr;
+	uint8_t frameBuff[MAX_FRAME_SIZE];
+
+
+
 	 	while (1){
+	 		if (broker_receive(&broker, frameBuff, &sockaddr)){
+	 			broker_packets_dispatcher(&broker, frameBuff, &sockaddr);
+
+	 		}
 
 	 		  if (!(GPIOB->IDR & (1<<11))){
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";

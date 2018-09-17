@@ -27,17 +27,17 @@
 
 /*-------------------------------INITIALIZE-----------------------------------------*/
 
-void broker_init_directly (broker_t * broker,
-		broker_net_conn connect,
-		broker_net_send send,
-		broker_net_rec receive,
-		broker_net_discon disconnect){
-	memset(broker, 0, sizeof(broker_t));
-	broker->net->connect = connect;
-	broker->net->send = send;
-	broker->net->receive = receive;
-	broker->net->disconnect = disconnect;
-}
+//void broker_init_directly (broker_t * broker,
+//		broker_net_conn connect,
+//		broker_net_send send,
+//		broker_net_rec receive,
+//		broker_net_discon disconnect){
+//	memset(broker, 0, sizeof(broker_t));
+//	broker->net->connect = connect;
+//	broker->net->send = send;
+//	broker->net->receive = receive;
+//	broker->net->disconnect = disconnect;
+//}
 
 
 void broker_init_by_given_net(broker_t * broker, broker_net_t * broker_net){
@@ -70,7 +70,7 @@ rem_length_t decode_pck_len (uint8_t * frame){
 
 bool broker_receive(broker_t * broker, uint8_t * frame, sockaddr_t * sockaddr){
 	uint16_t len;
-	broker->net->receive(NULL, sockaddr, frame, MAX_FRAME_SIZE);
+	broker->net->receive(broker->net->context, sockaddr, frame, MAX_FRAME_SIZE);
 }
 
 
@@ -93,8 +93,8 @@ void broker_packets_dispatcher (broker_t * broker, uint8_t * frame, sockaddr_t *
 		add_client(broker, &new_client);
 		conn_ack_t conn_ack;
 		encode_conn_ack(&conn_ack, sesion_present, ack_code);
-		_delay_ms(5000);
-		broker->net->send(NULL, sockaddr, (uint8_t*)&conn_ack, sizeof(conn_ack_t) );
+
+		broker->net->send(broker->net->context, sockaddr, (uint8_t*)&conn_ack, sizeof(conn_ack_t) );
 		break;
 	}
 	case PCKT_TYPE_PUBLISH:{
@@ -369,7 +369,7 @@ void publish_msg_to_subscribers(broker_t * broker, pub_pck_t * pub_pck){
 				uint16_t len = *pub_pck->var_head.len;
 				char* topic_name = pub_pck->var_head.name;
 				if (strncmp(broker->clients[i].subs_topic[j].name, topic_name, len)){
-					broker->net->send(NULL, &broker->clients[i].sockaddr, (uint8_t*)&pub_pck, sizeof(pub_pck_t) );
+					broker->net->send(broker->net->context, &broker->clients[i].sockaddr, (uint8_t*)&pub_pck, sizeof(pub_pck_t) );
 					break;
 				}
 			}
