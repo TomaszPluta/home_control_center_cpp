@@ -16,6 +16,8 @@
 #include "__rfm12b_platform.h"
 
 
+#define BROKER_ADDR		(1)
+
 
 uint8_t temp;
 uint8_t q = 0;
@@ -74,7 +76,7 @@ int broker_conn(void *cntx, sockaddr_t * sockaddr){
 
 int broker_send(void *cntx, sockaddr_t * sockaddr, const uint8_t* buff, uint16_t buffLen){
 	rfm12bObj_t * obj = (rfm12bObj_t*) cntx;
-	Rfm12bStartSending(obj, (uint8_t *)buff, buffLen);
+	Rfm12bStartSending(obj, (uint8_t *)buff, buffLen, (uint8_t)sockaddr->sin_addr.s_addr);
 	return buffLen;
 }
 
@@ -132,7 +134,7 @@ int main(){
  	 NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 
- 	Rrm12bObjInit (&rfm12bObj);
+ 	Rrm12bObjInit (&rfm12bObj, BROKER_ADDR);
 
 
 
@@ -158,7 +160,7 @@ int main(){
 
 	 		  if (!(GPIOB->IDR & (1<<11))){
 	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
-	 			  Rfm12bStartSending(&rfm12bObj, buff, 30);
+	 			  Rfm12bStartSending(&rfm12bObj, buff, 30, 2);
 	 			 _delay_ms(250);
 
 

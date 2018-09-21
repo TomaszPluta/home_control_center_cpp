@@ -33,8 +33,14 @@ extern "C" {
 #define RFM12_STATUS_CRL 	0x0040
 #define RFM12_STATUS_ATGL	0x0020
 
-#define RFM12_PREMBLE_LEN  	      (5)
-#define RFM12_MAX_FRAME_SIZE  	(256)
+#define RFM12_PREMBLE_LEN  	        (5)
+#define RFM12_MAX_FRAME_SIZE  	  (256)
+
+#define BYTE_NB_POS					(0)
+#define ADDR_TO_POS					(1)
+#define ADDR_FROM_POS				(2)
+
+#define HEADER_SIZE					(6)
 
 
 typedef struct {
@@ -50,16 +56,19 @@ typedef enum {
 
 
 
+
 typedef struct {
 	rfm12bBuff_t txBuff;
 	rfm12bBuff_t rxBuff;
 	rfm12bBuff_t completedRxBuff;
+	uint8_t rxFromAddr;
+	uint8_t rxTOAddr;
+	uint8_t module_addr;
 	rfm12bState_t state;
 }rfm12bObj_t;
 
 
-void Rrm12bObjInit (volatile rfm12bObj_t * rfm12bObj);
-
+void Rrm12bObjInit (volatile rfm12bObj_t * rfm12bObj, uint8_t module_addr);
 
 
 void Rfm12bInitNode();
@@ -78,7 +87,7 @@ uint8_t rfm12bReadFifo(void);
 
 void Rfm12bClearBuff (rfm12bBuff_t * rfm12bBuff);
 
-void Rfm12bStartSending (volatile rfm12bObj_t * rfm12bObj, uint8_t *data, uint8_t dataNb);
+void Rfm12bStartSending (volatile rfm12bObj_t * rfm12b, uint8_t *data, uint8_t dataNb, uint8_t toAddr);
 void Rfm12bIrqCallback (volatile rfm12bObj_t * rfm12bObj);
 
 

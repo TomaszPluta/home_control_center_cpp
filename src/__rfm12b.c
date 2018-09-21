@@ -36,8 +36,9 @@ void Rfm12bInit() {
   Rfm12bWriteCmd(0xC040); //1.66MHz,2.2V
 }
 
-void Rrm12bObjInit (volatile rfm12bObj_t * rfm12bObj){
+void Rrm12bObjInit (volatile rfm12bObj_t * rfm12bObj, uint8_t module_addr){
 	memset(rfm12bObj, 0, sizeof(rfm12bObj_t));
+	rfm12bObj->module_addr = module_addr;
 	rfm12bObj->state = receive;
 }
 
@@ -81,13 +82,15 @@ static void rfSend(uint8_t data)
 //	memset(rfm12bBuff, 0, sizeof (rfm12bBuff_t));
 //}
 
-void Rfm12bStartSending (volatile rfm12bObj_t * rfm12b, uint8_t *data, uint8_t dataNb){
+void Rfm12bStartSending (volatile rfm12bObj_t * rfm12b, uint8_t *data, uint8_t dataNb, uint8_t toAddr){
 
 	rfm12b->txBuff.data[0] = 0xAA;
 	rfm12b->txBuff.data[1] = 0x2D;
 	rfm12b->txBuff.data[2] = 0xD4;
 	rfm12b->txBuff.data[3] = dataNb;
-	memcpy((void*)&rfm12b->txBuff.data[4], data, dataNb);
+	rfm12b->txBuff.data[4] = toAddr;
+	rfm12b->txBuff.data[5] = rfm12b->module_addr;
+	memcpy((void*)&rfm12b->txBuff.data[HEADER_SIZE], data, dataNb);
 	rfm12b->txBuff.pos =0;
 	rfm12b->txBuff.dataNb = dataNb + RFM12_PREMBLE_LEN;
     rfm12bSwitchTx();
@@ -114,8 +117,10 @@ void Rfm12bMantainSending(volatile rfm12bObj_t * rfm12b){
 
 static void Rfm12bMoveDataToCompletedBuff(volatile rfm12bObj_t * rfm12b){
 	memset(&rfm12b->completedRxBuff, 0, sizeof (rfm12bBuff_t));
-	memcpy(rfm12b->completedRxBuff.data,  &rfm12b->rxBuff.data[1], rfm12b->rxBuff.dataNb);
+	memcpy(rfm12b->completedRxBuff.data,  &rfm12b->rxBuff.data[HEADER_SIZE], rfm12b->rxBuff.dataNb);
 	rfm12b->completedRxBuff.dataNb = rfm12b->rxBuff.dataNb;
+	rfm12b->rxTOAddr = rfm12b->rxBuff.data[ADDR_TO_POS];
+	rfm12b->rxFromAddr = rfm12b->rxBuff.data[ADDR_FROM_POS];
 	memset(&rfm12b->rxBuff, 0, sizeof (rfm12bBuff_t));
 }
 
@@ -124,17 +129,23 @@ static void Rfm12bresetRx(volatile rfm12bObj_t * rfm12b){
 	rfm12bFifoReset();
 }
 
-//namieszane. przywrocic
+
+/*+++++++++++++++++++++Frame++++++++++++++++++++++++++*/
+/* [BYTE_NUMBER] [ADDR_RECEIVER] [ADDR_SENDER] [DATA] */
+/*+++++++++++++++++++++Frame++++++++++++++++++++++++++*/
+
 void Rfm12bMantainreceiving(volatile rfm12bObj_t * rfm12b){
 	uint8_t rxByte = rfm12bReadFifo();
 	if (rfm12b->rxBuff.pos < RFM12_MAX_FRAME_SIZE){
 		rfm12b->rxBuff.data[rfm12b->rxBuff.pos++] = rxByte;
-		rfm12b->rxBuff.dataNb =  rfm12b->rxBuff.data[0];
+		rfm12b->rxBuff.dataNb =  rfm12b->rxBuff.data[BYTE_NB_POS];
 		if (rfm12b->rxBuff.pos == rfm12b->rxBuff.dataNb){
 			Rfm12bMoveDataToCompletedBuff(rfm12b);
 			Rfm12bresetRx(rfm12b);
 			GPIOC->ODR ^= GPIO_Pin_13;//
 		}
+	} else {
+		Rfm12bresetRx(rfm12b);
 	}
 }
 
