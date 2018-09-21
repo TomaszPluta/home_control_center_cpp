@@ -86,8 +86,10 @@ int broker_rec(void *cntx, sockaddr_t * sockaddr, uint8_t* buf, uint16_t  buf_le
 	if (byteNb > 0){
 		byteNb = (byteNb < buf_len) ? byteNb : buf_len;
 		memcpy (buf, (const void*) obj->completedRxBuff.data, byteNb);
+		obj->completedRxBuff.dataNb = 0;
+		sockaddr->sin_addr.s_addr = obj->completedRxBuff.rxFromAddr;
 	}
-	obj->completedRxBuff.dataNb = 0;
+
 	return byteNb;
 }
 

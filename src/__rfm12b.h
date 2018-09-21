@@ -40,13 +40,17 @@ extern "C" {
 #define ADDR_TO_POS					(1)
 #define ADDR_FROM_POS				(2)
 
-#define HEADER_SIZE					(6)
+#define L1_HEADER_SIZE				(3)
+#define L2_HEADER_SIZE				(3)
+#define ALL_HEADER_SIZE				(L1_HEADER_SIZE + L2_HEADER_SIZE)
 
 
 typedef struct {
-	uint8_t data[RFM12_MAX_FRAME_SIZE];
 	uint8_t pos;
 	uint8_t dataNb;
+	uint8_t rxTOAddr;
+	uint8_t rxFromAddr;
+	uint8_t data[RFM12_MAX_FRAME_SIZE];
 }rfm12bBuff_t;
 
 typedef enum {
@@ -61,8 +65,6 @@ typedef struct {
 	rfm12bBuff_t txBuff;
 	rfm12bBuff_t rxBuff;
 	rfm12bBuff_t completedRxBuff;
-	uint8_t rxFromAddr;
-	uint8_t rxTOAddr;
 	uint8_t module_addr;
 	rfm12bState_t state;
 }rfm12bObj_t;

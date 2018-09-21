@@ -5,5 +5,5 @@ main.cpp:54:14:void gpio_init()	16	static
 main.cpp:73:5:int broker_conn(void*, sockaddr_t*)	16	static
 main.cpp:77:5:int broker_send(void*, sockaddr_t*, const uint8_t*, uint16_t)	32	static
 main.cpp:83:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
-main.cpp:94:5:int broker_discon(void*, sockaddr_t*)	16	static
-main.cpp:101:5:int main()	4376	static
+main.cpp:96:5:int broker_discon(void*, sockaddr_t*)	16	static
+main.cpp:103:5:int main()	4376	static

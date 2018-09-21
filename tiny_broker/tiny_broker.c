@@ -113,7 +113,13 @@ void broker_packets_dispatcher (broker_t * broker, uint8_t * frame, sockaddr_t *
 		uint8_t topic_nb = broker_decode_subscribe(frame, &sub_pck);
 		tb_client_t * subscribing_client = broker_get_client_by_socket(broker, sockaddr);
 		uint8_t sub_result[MAX_SUBS_TOPIC];
-		add_subscriptions_from_list(subscribing_client, sub_pck.pld_topics, topic_nb, sub_result);
+		if (subscribing_client){
+			add_subscriptions_from_list(subscribing_client, sub_pck.pld_topics, topic_nb, sub_result);
+		} else {
+			for (uint8_t i = 0; i < topic_nb; i++){ //need refactor, doubled code
+				sub_result[i] = SUB_ACK_FAIL;
+			}
+		}
 		sub_ack_t sub_ack;
 		encode_subscribe_ack(&sub_ack, *sub_pck.var_head.packet_id, topic_nb, sub_result);
 		break;
@@ -288,7 +294,7 @@ uint8_t * encode_conn_ack(conn_ack_t * header_ack, bool session_present, uint8_t
 
 void broker_create_new_client(tb_client_t *new_client, const conn_pck_t * conn_pck,  sockaddr_t * sockaddr){
 	memset(new_client, 0, sizeof(tb_client_t));
-	memcpy(&new_client->sockaddr, &sockaddr, sizeof (sockaddr_t));
+	memcpy(&new_client->sockaddr, sockaddr, sizeof (sockaddr_t));
 
 	strncpy(new_client->id,  conn_pck->pld.client_id, *conn_pck->pld.client_id_len);
 
@@ -312,6 +318,8 @@ void broker_create_new_client(tb_client_t *new_client, const conn_pck_t * conn_p
 	if (conn_pck->var_head.conn_flags->pswd){
 		strncpy(new_client->password,  conn_pck->pld.pswd, *conn_pck->pld.pswd_len);
 	}
+
+	new_client->connected = true;
 }
 
 
@@ -472,7 +480,7 @@ bool add_subscriptions_from_list(tb_client_t * client, sub_topic_ptr_t *topic_li
 		uint8_t pos  = get_subscribed_topic_pos(client, topic_list[i].name, *topic_list[i].len);
 		if (pos != NOT_FOUND){
 			actualize_subs_topic_qos(&client->subs_topic[pos], *topic_list[i].qos);
-			result_list[i] = *topic_list[i].qos;
+			result_list[i] = *topic_list[i].qos; //refactor, extract doubled code
 		} else {
 			bool res = add_new_subscription_to_client(client, &topic_list[i]);
 			result_list[i] = *topic_list[i].qos;

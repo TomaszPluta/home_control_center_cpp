@@ -90,7 +90,7 @@ void Rfm12bStartSending (volatile rfm12bObj_t * rfm12b, uint8_t *data, uint8_t d
 	rfm12b->txBuff.data[3] = dataNb;
 	rfm12b->txBuff.data[4] = toAddr;
 	rfm12b->txBuff.data[5] = rfm12b->module_addr;
-	memcpy((void*)&rfm12b->txBuff.data[HEADER_SIZE], data, dataNb);
+	memcpy((void*)&rfm12b->txBuff.data[ALL_HEADER_SIZE], data, dataNb);
 	rfm12b->txBuff.pos =0;
 	rfm12b->txBuff.dataNb = dataNb + RFM12_PREMBLE_LEN;
     rfm12bSwitchTx();
@@ -117,10 +117,10 @@ void Rfm12bMantainSending(volatile rfm12bObj_t * rfm12b){
 
 static void Rfm12bMoveDataToCompletedBuff(volatile rfm12bObj_t * rfm12b){
 	memset(&rfm12b->completedRxBuff, 0, sizeof (rfm12bBuff_t));
-	memcpy(rfm12b->completedRxBuff.data,  &rfm12b->rxBuff.data[HEADER_SIZE], rfm12b->rxBuff.dataNb);
+	memcpy(rfm12b->completedRxBuff.data,  &rfm12b->rxBuff.data[L2_HEADER_SIZE], rfm12b->rxBuff.dataNb);
 	rfm12b->completedRxBuff.dataNb = rfm12b->rxBuff.dataNb;
-	rfm12b->rxTOAddr = rfm12b->rxBuff.data[ADDR_TO_POS];
-	rfm12b->rxFromAddr = rfm12b->rxBuff.data[ADDR_FROM_POS];
+	rfm12b->completedRxBuff.rxTOAddr = rfm12b->rxBuff.data[ADDR_TO_POS]; //cast this values as frame to struct
+	rfm12b->completedRxBuff.rxFromAddr = rfm12b->rxBuff.data[ADDR_FROM_POS];
 	memset(&rfm12b->rxBuff, 0, sizeof (rfm12bBuff_t));
 }
 
