@@ -40,7 +40,7 @@ extern "C" {
 #define ADDR_TO_POS					(1)
 #define ADDR_FROM_POS				(2)
 
-#define L1_HEADER_SIZE				(3)
+#define L1_HEADER_SIZE				(4)
 #define L2_HEADER_SIZE				(3)
 #define ALL_HEADER_SIZE				(L1_HEADER_SIZE + L2_HEADER_SIZE)
 

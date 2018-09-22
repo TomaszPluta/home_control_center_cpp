@@ -67,7 +67,8 @@ extern "C" {
 #define CONN_ACK_PLD_LEN			(2)
 #define CONTR_TYPE_CONNACK 			(2)
 #define PUB_ACK_LEN					(2)
-#define SUB_ACK_LEN					(3)
+#define SUB_ACK_VAR_HEAD_LEN		(2)
+#define SUB_ACK_ALL_HEAD_LEN		(4)
 #define UNSUB_ACK_LEN				(3)
 #define SUB_ACK_FAIL				(80)
 

@@ -161,7 +161,7 @@ int main(){
 	 		}
 
 	 		  if (!(GPIOB->IDR & (1<<11))){
-	 			  uint8_t buff[] = "helloWorld1helloWorld2helloWorld3";
+	 			  uint8_t buff[] = "abcdefghijabcdefghijabcdefghij";
 	 			  Rfm12bStartSending(&rfm12bObj, buff, 30, 2);
 	 			 _delay_ms(250);
 

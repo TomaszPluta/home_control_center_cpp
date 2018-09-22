@@ -68,6 +68,7 @@ rem_length_t decode_pck_len (uint8_t * frame){
 }
 
 
+
 bool broker_receive(broker_t * broker, uint8_t * frame, sockaddr_t * sockaddr){
 	uint16_t len;
 	broker->net->receive(broker->net->context, sockaddr, frame, MAX_FRAME_SIZE);
@@ -122,6 +123,7 @@ void broker_packets_dispatcher (broker_t * broker, uint8_t * frame, sockaddr_t *
 		}
 		sub_ack_t sub_ack;
 		encode_subscribe_ack(&sub_ack, *sub_pck.var_head.packet_id, topic_nb, sub_result);
+		broker->net->send(broker->net->context, sockaddr, (uint8_t*)&sub_ack, (SUB_ACK_ALL_HEAD_LEN + topic_nb));
 		break;
 	}
 	case PCKT_TYPE_UNSUBSCRIBE:{
@@ -389,7 +391,7 @@ void publish_msg_to_subscribers(broker_t * broker, pub_pck_t * pub_pck){
 void encode_publish_ack(publish_ack_t * publish_ack, uint16_t pckt_id){
 	publish_ack->control_type = (PCKT_TYPE_PUBACK << 4);
 	publish_ack->remainin_len = PUB_ACK_LEN;
-	publish_ack->packet_id = pckt_id;
+	publish_ack->packet_id = X_HTONS(pckt_id);
 }
 
 
@@ -478,7 +480,7 @@ bool add_subscriptions_from_list(tb_client_t * client, sub_topic_ptr_t *topic_li
 	uint8_t i=0;
 	while (i < topic_nb){
 		uint8_t pos  = get_subscribed_topic_pos(client, topic_list[i].name, *topic_list[i].len);
-		if (pos != NOT_FOUND){
+		if (pos != NOT_FOUND){ //reverse if & else
 			actualize_subs_topic_qos(&client->subs_topic[pos], *topic_list[i].qos);
 			result_list[i] = *topic_list[i].qos; //refactor, extract doubled code
 		} else {
@@ -499,8 +501,8 @@ bool add_subscriptions_from_list(tb_client_t * client, sub_topic_ptr_t *topic_li
 
 void  encode_subscribe_ack(sub_ack_t * sub_ack, uint16_t pckt_id, uint8_t topic_nb, uint8_t * result_list){
 	sub_ack->control_type = (PCKT_TYPE_SUBACK << 4);
-	sub_ack->remainin_len = SUB_ACK_LEN;  //(?)
-	sub_ack->packet_id = pckt_id;
+	sub_ack->remainin_len = SUB_ACK_VAR_HEAD_LEN + topic_nb;  //(?)
+	sub_ack->packet_id = X_HTONS(pckt_id);
 	memcpy(sub_ack->payload, result_list, topic_nb);
 }
 
@@ -560,8 +562,8 @@ bool delete_listed_subscriptions(tb_client_t * client, unsub_topic_ptr_t * unsub
 
 void  encode_unsubscribe_ack(unsub_ack_t * unsub_ack, uint16_t pckt_id){
 	unsub_ack->control_type = (PCKT_TYPE_SUBACK << 4);
-	unsub_ack->remainin_len = SUB_ACK_LEN;  //(?)
-	unsub_ack->packet_id = pckt_id;
+	unsub_ack->remainin_len = SUB_ACK_VAR_HEAD_LEN;  //(?)
+	unsub_ack->packet_id = X_HTONS(pckt_id);
 }
 
 

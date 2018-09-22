@@ -82,32 +82,34 @@ static void rfSend(uint8_t data)
 //	memset(rfm12bBuff, 0, sizeof (rfm12bBuff_t));
 //}
 
-void Rfm12bStartSending (volatile rfm12bObj_t * rfm12b, uint8_t *data, uint8_t dataNb, uint8_t toAddr){
-
-	rfm12b->txBuff.data[0] = 0xAA;
-	rfm12b->txBuff.data[1] = 0x2D;
-	rfm12b->txBuff.data[2] = 0xD4;
-	rfm12b->txBuff.data[3] = dataNb;
-	rfm12b->txBuff.data[4] = toAddr;
-	rfm12b->txBuff.data[5] = rfm12b->module_addr;
-	memcpy((void*)&rfm12b->txBuff.data[ALL_HEADER_SIZE], data, dataNb);
-	rfm12b->txBuff.pos =0;
-	rfm12b->txBuff.dataNb = dataNb + RFM12_PREMBLE_LEN;
-    rfm12bSwitchTx();
-    rfm12b->state = transmit;
-	rfSend(0xAA);
-}
-
-
-
 static void Rfm12bTranssmitSeqByte(volatile rfm12bBuff_t * txBuff){
 	uint16_t cmd = 0xB800;
 	uint8_t data = txBuff->data[txBuff->pos++];
 	Rfm12bWriteCmd(cmd | data);
 }
 
+
+void Rfm12bStartSending (volatile rfm12bObj_t * rfm12b, uint8_t *data, uint8_t dataNb, uint8_t toAddr){
+
+	rfm12b->txBuff.data[0] = 0xAA;
+	rfm12b->txBuff.data[1] = 0xAA;
+	rfm12b->txBuff.data[2] = 0x2D;
+	rfm12b->txBuff.data[3] = 0xD4;
+	rfm12b->txBuff.data[4] = dataNb;
+	rfm12b->txBuff.data[5] = toAddr;
+	rfm12b->txBuff.data[6] = rfm12b->module_addr;
+	memcpy((void*)&rfm12b->txBuff.data[ALL_HEADER_SIZE], data, dataNb);
+	rfm12b->txBuff.pos =0;
+	rfm12b->txBuff.dataNb = dataNb + ALL_HEADER_SIZE;
+    rfm12bSwitchTx();
+    rfm12b->state = transmit;
+	Rfm12bTranssmitSeqByte(&rfm12b->txBuff);
+}
+
+
+
 void Rfm12bMantainSending(volatile rfm12bObj_t * rfm12b){
-	 if (rfm12b->txBuff.pos < rfm12b->txBuff.dataNb){
+	 if (rfm12b->txBuff.pos <= rfm12b->txBuff.dataNb){
 		 Rfm12bTranssmitSeqByte(&rfm12b->txBuff);
 	 } else{
 		 rfm12b->state = receive;
@@ -139,7 +141,7 @@ void Rfm12bMantainreceiving(volatile rfm12bObj_t * rfm12b){
 	if (rfm12b->rxBuff.pos < RFM12_MAX_FRAME_SIZE){
 		rfm12b->rxBuff.data[rfm12b->rxBuff.pos++] = rxByte;
 		rfm12b->rxBuff.dataNb =  rfm12b->rxBuff.data[BYTE_NB_POS];
-		if (rfm12b->rxBuff.pos == rfm12b->rxBuff.dataNb){
+		if (rfm12b->rxBuff.pos == (rfm12b->rxBuff.dataNb + L2_HEADER_SIZE)){
 			Rfm12bMoveDataToCompletedBuff(rfm12b);
 			Rfm12bresetRx(rfm12b);
 			GPIOC->ODR ^= GPIO_Pin_13;//
