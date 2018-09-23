@@ -7,4 +7,5 @@ gpio.c:80:11:SetGpioAsOutAltPushPUll	16	static
 gpio.c:99:11:SetGpioAsOutput	16	static
 gpio.c:108:11:IsGpioHigh	16	static
 gpio.c:114:11:EnableExti	16	static
-gpio.c:133:11:_delay_ms	24	static
+gpio.c:131:12:EnableExtiGeneral	32	static
+gpio.c:171:11:_delay_ms	24	static

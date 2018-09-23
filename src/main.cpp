@@ -15,7 +15,7 @@
 #include "__rfm12b.h"
 #include "__rfm12b_platform.h"
 
-
+#include "spi.h"
 #define BROKER_ADDR		(1)
 
 
@@ -43,6 +43,16 @@ void EXTI9_5_IRQHandler (void){
 
 }
 
+
+
+
+extern "C" void EXTI15_10_IRQHandler (void);
+
+
+void EXTI15_10_IRQHandler (void){
+	EXTI_ClearFlag(EXTI_Line12);
+
+}
 
 
 int mqtt_net_disconnect_cb(void *context){
@@ -98,10 +108,46 @@ int broker_discon(void *context, sockaddr_t * sockaddr){
 }
 
 
+//
+//void OdczytPozycji(void)
+//{
+//	cli();
+//	uint8_t l,h;
+//	DotykX=0;
+//	DotykY=0;									//wylacz przerwanie od pinu 2
+//	PORTC_OUTCLR = PIN4_bm;						//pin CS ustawic na 0
+//	PORTC.INT0MASK = 0x00;						//wylaczenie przerwania od pinow portu C
+//
+//	T_Wyslij_Bajt(0xD2);							//wyslij bajt kontrolny b 1 001 0 0 10
+//	h = T_Wyslij_Bajt(0x00);						//odbierz dane H
+//	DotykX = DotykX | h;
+//	DotykX = DotykX <<8;
+//	l = T_Wyslij_Bajt(0x00);						//odbierz dane L
+//	DotykX = DotykX | l;
+//
+//	T_Wyslij_Bajt(0x92);							// to samo dla Y
+//	h = T_Wyslij_Bajt(0x00);
+//	DotykY = DotykY | h;
+//	DotykY = DotykY <<8;
+//	l = T_Wyslij_Bajt(0x00);
+//	DotykY = DotykY | l;
+//	PORTC.INT0MASK = 0x04;						//odblokowanie przerwania od zbocza dla pinu 2
+//	PORTC_OUTSET = PIN4_bm;						//podniesc pin CS
+//	sei();									//ustaw flage I
+//}
+//
+
+
 
 
 int main(){
 
+	SetGpioAsInFloating(GPIOA, 12);
+	EnableExtiGeneral(0, 12, false, true);
+
+	spiInit();
+	uint16_t rec= SPiTransmit(0b11010111);
+	 rec= SPiTransmit(0);
 
  	EnableGpioClk(LOG_UART_PORT);
  	SetGpioAsOutAltPushPUll(LOG_UART_PORT, LOG_UART_PIN_TX);

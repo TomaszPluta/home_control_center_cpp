@@ -123,9 +123,47 @@
 	 		 		//SetGpioAsInPullUp(GPIOB, 5);
 	 		 	}
 	 		 	NVIC_EnableIRQ(EXTI9_5_IRQn);
-
-
 	 		 }
+
+
+
+
+			 	 void EnableExtiGeneral(uint8_t gpioPortNb, uint8_t pinNb, bool rise, bool fall){
+		 		 	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
+		 		 	AFIO->EXTICR[pinNb >> 0x02] |= ((gpioPortNb) << (0x04 * (pinNb & 0x03)));
+
+		 		 	EXTI->IMR  |= (1<<pinNb);
+		 		 	if (rise){
+		 		 		EXTI->RTSR |= (1<<pinNb);
+		 		 	}
+		 		 	if (fall){
+		 		 		EXTI->FTSR |= (1<<pinNb);
+		 		 		//SetGpioAsInPullUp(GPIOB, 5);
+		 		 	}
+
+
+		 		 	uint8_t irqNb;
+
+		 		 	if (pinNb >=0  && pinNb <=3){
+		 		 		const uint8_t irqOffset = 6;
+		 		 		irqNb = (pinNb +  irqOffset);
+		 		 	} else if (pinNb >=5  && pinNb <9){
+		 		 		irqNb = EXTI9_5_IRQn;
+		 		 	} else if (pinNb >=10  && pinNb <=15){
+		 		 		irqNb = EXTI15_10_IRQn;
+		 		 	}
+
+
+		 		 	NVIC_EnableIRQ(irqNb);
+
+
+
+		 		 }
+
+
+
+
+
 
 
 
