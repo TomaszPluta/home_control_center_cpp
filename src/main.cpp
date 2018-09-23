@@ -46,12 +46,40 @@ void EXTI9_5_IRQHandler (void){
 
 
 
-extern "C" void EXTI15_10_IRQHandler (void);
+void OdczytPozycji(void)
+{
 
+	//spi2 changed to 8 bits mode
+	uint8_t l,h;
+	uint16_t ReadTouchX = 0;
+	uint16_t ReadTouchY = 0;									//wylacz przerwanie od pinu 2
+	CS_LOW
+	SPiTransmit(0xD2);							//wyslij bajt kontrolny b 1 001 0 0 10
+	h = SPiTransmit(0x00);						//odbierz dane H
+	ReadTouchX = ReadTouchX | h;
+	ReadTouchX = ReadTouchX <<8;
+	l = SPiTransmit(0x00);						//odbierz dane L
+	ReadTouchX = ReadTouchX | l;
+
+	SPiTransmit(0x92);							// to samo dla Y
+	h = SPiTransmit(0x00);
+	ReadTouchY = ReadTouchY | h;
+	ReadTouchY = ReadTouchY <<8;
+	l = SPiTransmit(0x00);
+	ReadTouchY = ReadTouchY | l;
+
+	CS_HIGH									//ustaw flage I
+}
+
+
+
+
+
+extern "C" void EXTI15_10_IRQHandler (void);
 
 void EXTI15_10_IRQHandler (void){
 	EXTI_ClearFlag(EXTI_Line12);
-
+	OdczytPozycji();
 }
 
 
@@ -108,46 +136,16 @@ int broker_discon(void *context, sockaddr_t * sockaddr){
 }
 
 
-//
-//void OdczytPozycji(void)
-//{
-//	cli();
-//	uint8_t l,h;
-//	DotykX=0;
-//	DotykY=0;									//wylacz przerwanie od pinu 2
-//	PORTC_OUTCLR = PIN4_bm;						//pin CS ustawic na 0
-//	PORTC.INT0MASK = 0x00;						//wylaczenie przerwania od pinow portu C
-//
-//	T_Wyslij_Bajt(0xD2);							//wyslij bajt kontrolny b 1 001 0 0 10
-//	h = T_Wyslij_Bajt(0x00);						//odbierz dane H
-//	DotykX = DotykX | h;
-//	DotykX = DotykX <<8;
-//	l = T_Wyslij_Bajt(0x00);						//odbierz dane L
-//	DotykX = DotykX | l;
-//
-//	T_Wyslij_Bajt(0x92);							// to samo dla Y
-//	h = T_Wyslij_Bajt(0x00);
-//	DotykY = DotykY | h;
-//	DotykY = DotykY <<8;
-//	l = T_Wyslij_Bajt(0x00);
-//	DotykY = DotykY | l;
-//	PORTC.INT0MASK = 0x04;						//odblokowanie przerwania od zbocza dla pinu 2
-//	PORTC_OUTSET = PIN4_bm;						//podniesc pin CS
-//	sei();									//ustaw flage I
-//}
-//
 
 
 
 
 int main(){
 
+	spiInit();
 	SetGpioAsInFloating(GPIOA, 12);
 	EnableExtiGeneral(0, 12, false, true);
 
-	spiInit();
-	uint16_t rec= SPiTransmit(0b11010111);
-	 rec= SPiTransmit(0);
 
  	EnableGpioClk(LOG_UART_PORT);
  	SetGpioAsOutAltPushPUll(LOG_UART_PORT, LOG_UART_PIN_TX);

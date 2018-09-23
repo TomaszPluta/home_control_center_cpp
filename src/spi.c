@@ -15,7 +15,7 @@ void spiInit(void) {
 	SPI_InitTypeDef  SPI_InitStructure;
 	GPIO_InitTypeDef GPIO_InitStructure;
 
-	/* Enable SPI1 and GPIOA clocks */
+	/* Enable SPI and GPIOA clocks */
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
@@ -35,10 +35,10 @@ void spiInit(void) {
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 
-	/* SPI1 configuration */
+	/* SPI configuration */
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
 	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-	SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;
+	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
 	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;
 	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
 	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
@@ -48,7 +48,7 @@ void spiInit(void) {
 	SPI_SSOutputCmd(SPI2, ENABLE);
 	SPI_Init(SPI2, &SPI_InitStructure);
 
-	/* Enable SPI1  */
+	/* Enable SPI  */
 	SPI_Cmd(SPI2, ENABLE);
 
 }
@@ -57,7 +57,7 @@ void spiInit(void) {
 
 uint16_t SPiTransmit( uint16_t cmd )
 {
-	CS_LOW;
+//	CS_LOW;
 
 	/* Loop while DR register in not emplty */
 	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
@@ -71,7 +71,7 @@ uint16_t SPiTransmit( uint16_t cmd )
 	/* Return the byte read from the SPI bus */
 	uint16_t recData = SPI_I2S_ReceiveData(SPI2);
 
-	CS_HIGH;
+//	CS_HIGH;
 
 	return recData;
 
