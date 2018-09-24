@@ -46,29 +46,29 @@ void EXTI9_5_IRQHandler (void){
 
 
 
-void OdczytPozycji(void)
+void ReadTouch(void)
 {
 
 	//spi2 changed to 8 bits mode
-	uint8_t l,h;
+	uint8_t lx,hx, ly, hy;
 	uint16_t ReadTouchX = 0;
-	uint16_t ReadTouchY = 0;									//wylacz przerwanie od pinu 2
+	uint16_t ReadTouchY = 0;
 	CS_LOW
-	SPiTransmit(0xD2);							//wyslij bajt kontrolny b 1 001 0 0 10
-	h = SPiTransmit(0x00);						//odbierz dane H
-	ReadTouchX = ReadTouchX | h;
+	SPiTransmit(0xD2);
+	hx = SPiTransmit(0x00);
+	ReadTouchX = ReadTouchX | hx;
 	ReadTouchX = ReadTouchX <<8;
-	l = SPiTransmit(0x00);						//odbierz dane L
-	ReadTouchX = ReadTouchX | l;
+	lx = SPiTransmit(0x00);
+	ReadTouchX = ReadTouchX | lx;
 
-	SPiTransmit(0x92);							// to samo dla Y
-	h = SPiTransmit(0x00);
-	ReadTouchY = ReadTouchY | h;
+	SPiTransmit(0x92);
+	hy = SPiTransmit(0x00);
+	ReadTouchY = ReadTouchY | hy;
 	ReadTouchY = ReadTouchY <<8;
-	l = SPiTransmit(0x00);
-	ReadTouchY = ReadTouchY | l;
+	ly = SPiTransmit(0x00);
+	ReadTouchY = ReadTouchY | ly;
 
-	CS_HIGH									//ustaw flage I
+	CS_HIGH
 }
 
 
@@ -78,8 +78,8 @@ void OdczytPozycji(void)
 extern "C" void EXTI15_10_IRQHandler (void);
 
 void EXTI15_10_IRQHandler (void){
+	ReadTouch();
 	EXTI_ClearFlag(EXTI_Line12);
-	OdczytPozycji();
 }
 
 

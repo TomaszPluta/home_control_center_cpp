@@ -3003,7 +3003,7 @@ LOAD /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.0.1/ARMTools/bin/../lib/gcc/arm-
                 0x00000000000004c4       0x1d /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.0.1/ARMTools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/armv7-m/crtn.o
 OUTPUT(home_control_center_cpp.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000     0xabed
+.debug_info     0x0000000000000000     0xac09
  .debug_info    0x0000000000000000      0xab8 FreeRTOS/source/list.o
  .debug_info    0x0000000000000ab8      0x2d2 FreeRTOS/source/port.o
  .debug_info    0x0000000000000d8a     0x203d FreeRTOS/source/tasks.o
@@ -3014,13 +3014,13 @@ OUTPUT(home_control_center_cpp.elf elf32-littlearm)
  .debug_info    0x00000000000049e0      0xd90 src/__rfm12b.o
  .debug_info    0x0000000000005770      0x4b1 src/__rfm12b_platform.o
  .debug_info    0x0000000000005c21      0x7be src/gpio.o
- .debug_info    0x00000000000063df     0x1b8a src/main.o
- .debug_info    0x0000000000007f69      0x346 src/platform.o
- .debug_info    0x00000000000082af      0x40c src/spi.o
- .debug_info    0x00000000000086bb       0x81 src/startup_stm32f10x_md.o
- .debug_info    0x000000000000873c      0x121 src/stm32f1xx_it.o
- .debug_info    0x000000000000885d      0x4a7 src/system_stm32f10x.o
- .debug_info    0x0000000000008d04     0x1ee9 tiny_broker/tiny_broker.o
+ .debug_info    0x00000000000063df     0x1ba6 src/main.o
+ .debug_info    0x0000000000007f85      0x346 src/platform.o
+ .debug_info    0x00000000000082cb      0x40c src/spi.o
+ .debug_info    0x00000000000086d7       0x81 src/startup_stm32f10x_md.o
+ .debug_info    0x0000000000008758      0x121 src/stm32f1xx_it.o
+ .debug_info    0x0000000000008879      0x4a7 src/system_stm32f10x.o
+ .debug_info    0x0000000000008d20     0x1ee9 tiny_broker/tiny_broker.o
 
 .debug_abbrev   0x0000000000000000     0x1eda
  .debug_abbrev  0x0000000000000000      0x1c5 FreeRTOS/source/list.o

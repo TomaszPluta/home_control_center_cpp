@@ -21,23 +21,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .ARM.attributes 00000029  00000000  00000000  00012b60  2**0
                   CONTENTS, READONLY
-  9 .debug_info   0000abed  00000000  00000000  00012b89  2**0
+  9 .debug_info   0000ac09  00000000  00000000  00012b89  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 00001eda  00000000  00000000  0001d776  2**0
+ 10 .debug_abbrev 00001eda  00000000  00000000  0001d792  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_aranges 00000958  00000000  00000000  0001f650  2**3
+ 11 .debug_aranges 00000958  00000000  00000000  0001f670  2**3
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000868  00000000  00000000  0001ffa8  2**3
+ 12 .debug_ranges 00000868  00000000  00000000  0001ffc8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_line   00003dd7  00000000  00000000  00020810  2**0
+ 13 .debug_line   00003dd7  00000000  00000000  00020830  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    00003638  00000000  00000000  000245e7  2**0
+ 14 .debug_str    00003638  00000000  00000000  00024607  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .comment      0000007c  00000000  00000000  00027c1f  2**0
+ 15 .comment      0000007c  00000000  00000000  00027c3f  2**0
                   CONTENTS, READONLY
- 16 .debug_frame  000025a4  00000000  00000000  00027c9c  2**2
+ 16 .debug_frame  000025a4  00000000  00000000  00027cbc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 17 .stabstr      0000003f  00000000  00000000  0002a240  2**0
+ 17 .stabstr      0000003f  00000000  00000000  0002a260  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -3012,7 +3012,7 @@ void OdczytPozycji(void)
  80011d4:	af00      	add	r7, sp, #0
 
 	//spi2 changed to 8 bits mode
-	uint8_t l,h;
+	uint8_t lx,hx, ly, hy;
 	uint16_t ReadTouchX = 0;
  80011d6:	2300      	movs	r3, #0
  80011d8:	80fb      	strh	r3, [r7, #6]
@@ -3026,12 +3026,12 @@ void OdczytPozycji(void)
 	SPiTransmit(0xD2);							//wyslij bajt kontrolny b 1 001 0 0 10
  80011e8:	20d2      	movs	r0, #210	; 0xd2
  80011ea:	f000 fa01 	bl	80015f0 <SPiTransmit>
-	h = SPiTransmit(0x00);						//odbierz dane H
+	hx = SPiTransmit(0x00);						//odbierz dane H
  80011ee:	2000      	movs	r0, #0
  80011f0:	f000 f9fe 	bl	80015f0 <SPiTransmit>
  80011f4:	4603      	mov	r3, r0
  80011f6:	70fb      	strb	r3, [r7, #3]
-	ReadTouchX = ReadTouchX | h;
+	ReadTouchX = ReadTouchX | hx;
  80011f8:	78fb      	ldrb	r3, [r7, #3]
  80011fa:	b29a      	uxth	r2, r3
  80011fc:	88fb      	ldrh	r3, [r7, #6]
@@ -3041,12 +3041,12 @@ void OdczytPozycji(void)
  8001202:	88fb      	ldrh	r3, [r7, #6]
  8001204:	021b      	lsls	r3, r3, #8
  8001206:	80fb      	strh	r3, [r7, #6]
-	l = SPiTransmit(0x00);						//odbierz dane L
+	lx = SPiTransmit(0x00);						//odbierz dane L
  8001208:	2000      	movs	r0, #0
  800120a:	f000 f9f1 	bl	80015f0 <SPiTransmit>
  800120e:	4603      	mov	r3, r0
  8001210:	70bb      	strb	r3, [r7, #2]
-	ReadTouchX = ReadTouchX | l;
+	ReadTouchX = ReadTouchX | lx;
  8001212:	78bb      	ldrb	r3, [r7, #2]
  8001214:	b29a      	uxth	r2, r3
  8001216:	88fb      	ldrh	r3, [r7, #6]
@@ -3056,13 +3056,13 @@ void OdczytPozycji(void)
 	SPiTransmit(0x92);							// to samo dla Y
  800121c:	2092      	movs	r0, #146	; 0x92
  800121e:	f000 f9e7 	bl	80015f0 <SPiTransmit>
-	h = SPiTransmit(0x00);
+	hy = SPiTransmit(0x00);
  8001222:	2000      	movs	r0, #0
  8001224:	f000 f9e4 	bl	80015f0 <SPiTransmit>
  8001228:	4603      	mov	r3, r0
- 800122a:	70fb      	strb	r3, [r7, #3]
-	ReadTouchY = ReadTouchY | h;
- 800122c:	78fb      	ldrb	r3, [r7, #3]
+ 800122a:	707b      	strb	r3, [r7, #1]
+	ReadTouchY = ReadTouchY | hy;
+ 800122c:	787b      	ldrb	r3, [r7, #1]
  800122e:	b29a      	uxth	r2, r3
  8001230:	88bb      	ldrh	r3, [r7, #4]
  8001232:	4313      	orrs	r3, r2
@@ -3071,13 +3071,13 @@ void OdczytPozycji(void)
  8001236:	88bb      	ldrh	r3, [r7, #4]
  8001238:	021b      	lsls	r3, r3, #8
  800123a:	80bb      	strh	r3, [r7, #4]
-	l = SPiTransmit(0x00);
+	ly = SPiTransmit(0x00);
  800123c:	2000      	movs	r0, #0
  800123e:	f000 f9d7 	bl	80015f0 <SPiTransmit>
  8001242:	4603      	mov	r3, r0
- 8001244:	70bb      	strb	r3, [r7, #2]
-	ReadTouchY = ReadTouchY | l;
- 8001246:	78bb      	ldrb	r3, [r7, #2]
+ 8001244:	703b      	strb	r3, [r7, #0]
+	ReadTouchY = ReadTouchY | ly;
+ 8001246:	783b      	ldrb	r3, [r7, #0]
  8001248:	b29a      	uxth	r2, r3
  800124a:	88bb      	ldrh	r3, [r7, #4]
  800124c:	4313      	orrs	r3, r2
@@ -3104,11 +3104,13 @@ extern "C" void EXTI15_10_IRQHandler (void);
 void EXTI15_10_IRQHandler (void){
  8001268:	b580      	push	{r7, lr}
  800126a:	af00      	add	r7, sp, #0
-	EXTI_ClearFlag(EXTI_Line12);
- 800126c:	f44f 5080 	mov.w	r0, #4096	; 0x1000
- 8001270:	f7ff f938 	bl	80004e4 <EXTI_ClearFlag>
+// 	NVIC_DisableIRQ(EXTI15_10_IRQn);
 	OdczytPozycji();
- 8001274:	f7ff ffac 	bl	80011d0 <_Z13OdczytPozycjiv>
+ 800126c:	f7ff ffb0 	bl	80011d0 <_Z13OdczytPozycjiv>
+	EXTI_ClearFlag(EXTI_Line12);
+ 8001270:	f44f 5080 	mov.w	r0, #4096	; 0x1000
+ 8001274:	f7ff f936 	bl	80004e4 <EXTI_ClearFlag>
+ //	NVIC_EnableIRQ(EXTI15_10_IRQn);
 }
  8001278:	bf00      	nop
  800127a:	bd80      	pop	{r7, pc}

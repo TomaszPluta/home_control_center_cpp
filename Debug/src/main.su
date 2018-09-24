@@ -2,10 +2,10 @@ core_cm3.h:930:22:void NVIC_EnableIRQ(IRQn_Type)	16	static
 main.cpp:39:6:void EXTI9_5_IRQHandler()	8	static
 main.cpp:49:6:void OdczytPozycji()	16	static
 main.cpp:80:6:void EXTI15_10_IRQHandler()	8	static
-main.cpp:86:5:int mqtt_net_disconnect_cb(void*)	16	static
-main.cpp:92:14:void gpio_init()	16	static
-main.cpp:111:5:int broker_conn(void*, sockaddr_t*)	16	static
-main.cpp:115:5:int broker_send(void*, sockaddr_t*, const uint8_t*, uint16_t)	32	static
-main.cpp:121:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
-main.cpp:134:5:int broker_discon(void*, sockaddr_t*)	16	static
-main.cpp:143:5:int main()	4376	static
+main.cpp:88:5:int mqtt_net_disconnect_cb(void*)	16	static
+main.cpp:94:14:void gpio_init()	16	static
+main.cpp:113:5:int broker_conn(void*, sockaddr_t*)	16	static
+main.cpp:117:5:int broker_send(void*, sockaddr_t*, const uint8_t*, uint16_t)	32	static
+main.cpp:123:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
+main.cpp:136:5:int broker_discon(void*, sockaddr_t*)	16	static
+main.cpp:145:5:int main()	4376	static
