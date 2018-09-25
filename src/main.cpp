@@ -66,21 +66,6 @@ void ReadTouch(void)
 
 	CS_HIGH
 
-//	SpiTransmit(0xD200);
-//	hx = SpiTransmit(0x00);
-//	ReadTouchX = ReadTouchX | hx;
-//	ReadTouchX = ReadTouchX <<8;
-//	lx = SpiTransmit(0x00);
-//	ReadTouchX = ReadTouchX | lx;
-//
-//	SpiTransmit(0x92);
-//	hy = SpiTransmit(0x00);
-//	ReadTouchY = ReadTouchY | hy;
-//	ReadTouchY = ReadTouchY <<8;
-//	ly = SpiTransmit(0x00);
-//	ReadTouchY = ReadTouchY | ly;
-//
-//	CS_HIGH
 }
 
 
