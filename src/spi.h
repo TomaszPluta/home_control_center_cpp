@@ -22,7 +22,7 @@ extern "C" {
 void spiInit(void);
 
 
-uint16_t SPiTransmit( uint16_t cmd );
+uint16_t SpiTransmit( uint16_t cmd );
 
 #ifdef __cplusplus
 }

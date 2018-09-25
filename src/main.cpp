@@ -49,26 +49,38 @@ void EXTI9_5_IRQHandler (void){
 void ReadTouch(void)
 {
 
-	//spi2 changed to 8 bits mode
-	uint8_t lx,hx, ly, hy;
-	uint16_t ReadTouchX = 0;
-	uint16_t ReadTouchY = 0;
-	CS_LOW
-	SPiTransmit(0xD2);
-	hx = SPiTransmit(0x00);
-	ReadTouchX = ReadTouchX | hx;
-	ReadTouchX = ReadTouchX <<8;
-	lx = SPiTransmit(0x00);
-	ReadTouchX = ReadTouchX | lx;
+#define XPT_2046_READ_X (0xD2)
+#define XPT_2046_READ_Y (0x92)
 
-	SPiTransmit(0x92);
-	hy = SPiTransmit(0x00);
-	ReadTouchY = ReadTouchY | hy;
-	ReadTouchY = ReadTouchY <<8;
-	ly = SPiTransmit(0x00);
-	ReadTouchY = ReadTouchY | ly;
+
+	uint16_t TouchXval;
+	uint16_t TouchYval;;
+
+	CS_LOW
+
+	SpiTransmit(0xD2);
+	TouchXval = SpiTransmit(0x00);
+
+	SpiTransmit(0x92);
+	TouchYval = SpiTransmit(0x00);
 
 	CS_HIGH
+
+//	SpiTransmit(0xD200);
+//	hx = SpiTransmit(0x00);
+//	ReadTouchX = ReadTouchX | hx;
+//	ReadTouchX = ReadTouchX <<8;
+//	lx = SpiTransmit(0x00);
+//	ReadTouchX = ReadTouchX | lx;
+//
+//	SpiTransmit(0x92);
+//	hy = SpiTransmit(0x00);
+//	ReadTouchY = ReadTouchY | hy;
+//	ReadTouchY = ReadTouchY <<8;
+//	ly = SpiTransmit(0x00);
+//	ReadTouchY = ReadTouchY | ly;
+//
+//	CS_HIGH
 }
 
 
