@@ -16,6 +16,11 @@
 #include "__rfm12b_platform.h"
 
 #include "spi.h"
+
+
+#include "sd.h"
+#include "/home/tomek/STM32_workspace_9.0/home_control_center_cpp/src/FATFs/diskio.h"
+
 #define BROKER_ADDR		(1)
 
 
@@ -135,14 +140,45 @@ int broker_discon(void *context, sockaddr_t * sockaddr){
 
 
 
+uint16_t SpiTrans( uint16_t cmd )
+{
+	NSEL_RFM12_LOW;
+	/* Loop while DR register in not emplty */
+	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
+
+	/* Send byte through the SPI1 peripheral */
+	SPI_I2S_SendData(SPI2, cmd);
+
+	/* Wait to receive a byte */
+	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
+
+	/* Return the byte read from the SPI bus */
+	uint16_t recData = SPI_I2S_ReceiveData(SPI2);
+
+	NSEL_RFM12_HIGH;
+
+	return recData;
+
+}
+
 
 
 int main(){
 
 	spiInit();
+
+
 	SetGpioAsInFloating(GPIOA, 12);
 	EnableExtiGeneral(0, 12, false, true);
 
+
+	uint8_t buffSD[4096];
+	disk_initialize(0);
+
+	uint8_t inputBuff[128];
+	memset(inputBuff, 'x', 128);
+	disk_write(0,inputBuff,0, 1);
+	disk_read(0,buffSD,0, 1);
 
  	EnableGpioClk(LOG_UART_PORT);
  	SetGpioAsOutAltPushPUll(LOG_UART_PORT, LOG_UART_PIN_TX);

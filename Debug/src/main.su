@@ -1,11 +1,12 @@
 core_cm3.h:930:22:void NVIC_EnableIRQ(IRQn_Type)	16	static
-main.cpp:39:6:void EXTI9_5_IRQHandler()	8	static
-main.cpp:49:6:void ReadTouch()	16	static
-main.cpp:92:6:void EXTI15_10_IRQHandler()	8	static
-main.cpp:98:5:int mqtt_net_disconnect_cb(void*)	16	static
-main.cpp:104:14:void gpio_init()	16	static
-main.cpp:123:5:int broker_conn(void*, sockaddr_t*)	16	static
-main.cpp:127:5:int broker_send(void*, sockaddr_t*, const uint8_t*, uint16_t)	32	static
-main.cpp:133:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
-main.cpp:146:5:int broker_discon(void*, sockaddr_t*)	16	static
-main.cpp:155:5:int main()	4376	static
+main.cpp:44:6:void EXTI9_5_IRQHandler()	8	static
+main.cpp:54:6:void ReadTouch()	16	static
+main.cpp:82:6:void EXTI15_10_IRQHandler()	8	static
+main.cpp:88:5:int mqtt_net_disconnect_cb(void*)	16	static
+main.cpp:94:14:void gpio_init()	16	static
+main.cpp:113:5:int broker_conn(void*, sockaddr_t*)	16	static
+main.cpp:117:5:int broker_send(void*, sockaddr_t*, const uint8_t*, uint16_t)	32	static
+main.cpp:123:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
+main.cpp:136:5:int broker_discon(void*, sockaddr_t*)	16	static
+main.cpp:143:10:uint16_t SpiTrans(uint16_t)	24	static
+main.cpp:166:5:int main()	8600	static
