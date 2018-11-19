@@ -2973,7 +2973,7 @@ LOAD /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.0.1/ARMTools/bin/../lib/gcc/arm-
                 0x0000000000000491       0x1d /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.0.1/ARMTools/bin/../lib/gcc/arm-atollic-eabi/6.3.1/armv7-m/crtn.o
 OUTPUT(home_control_center_cpp.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000     0xa709
+.debug_info     0x0000000000000000     0xa771
  .debug_info    0x0000000000000000      0xab8 FreeRTOS/source/list.o
  .debug_info    0x0000000000000ab8      0x2d2 FreeRTOS/source/port.o
  .debug_info    0x0000000000000d8a     0x203d FreeRTOS/source/tasks.o
@@ -2984,12 +2984,12 @@ OUTPUT(home_control_center_cpp.elf elf32-littlearm)
  .debug_info    0x00000000000049e0      0xd90 src/__rfm12b.o
  .debug_info    0x0000000000005770      0x4b1 src/__rfm12b_platform.o
  .debug_info    0x0000000000005c21      0x745 src/gpio.o
- .debug_info    0x0000000000006366     0x1b2b src/main.o
- .debug_info    0x0000000000007e91      0x346 src/platform.o
- .debug_info    0x00000000000081d7       0x81 src/startup_stm32f10x_md.o
- .debug_info    0x0000000000008258      0x121 src/stm32f1xx_it.o
- .debug_info    0x0000000000008379      0x4a7 src/system_stm32f10x.o
- .debug_info    0x0000000000008820     0x1ee9 tiny_broker/tiny_broker.o
+ .debug_info    0x0000000000006366     0x1b93 src/main.o
+ .debug_info    0x0000000000007ef9      0x346 src/platform.o
+ .debug_info    0x000000000000823f       0x81 src/startup_stm32f10x_md.o
+ .debug_info    0x00000000000082c0      0x121 src/stm32f1xx_it.o
+ .debug_info    0x00000000000083e1      0x4a7 src/system_stm32f10x.o
+ .debug_info    0x0000000000008888     0x1ee9 tiny_broker/tiny_broker.o
 
 .debug_abbrev   0x0000000000000000     0x1d6b
  .debug_abbrev  0x0000000000000000      0x1c5 FreeRTOS/source/list.o
@@ -3061,7 +3061,7 @@ OUTPUT(home_control_center_cpp.elf elf32-littlearm)
  .debug_ranges  0x00000000000006d8       0x28 src/system_stm32f10x.o
  .debug_ranges  0x0000000000000700      0x138 tiny_broker/tiny_broker.o
 
-.debug_line     0x0000000000000000     0x3b54
+.debug_line     0x0000000000000000     0x3b68
  .debug_line    0x0000000000000000      0x2da FreeRTOS/source/list.o
  .debug_line    0x00000000000002da      0x289 FreeRTOS/source/port.o
  .debug_line    0x0000000000000563      0xb72 FreeRTOS/source/tasks.o
@@ -3072,14 +3072,14 @@ OUTPUT(home_control_center_cpp.elf elf32-littlearm)
  .debug_line    0x000000000000204f      0x3d0 src/__rfm12b.o
  .debug_line    0x000000000000241f      0x22d src/__rfm12b_platform.o
  .debug_line    0x000000000000264c      0x270 src/gpio.o
- .debug_line    0x00000000000028bc      0x56d src/main.o
- .debug_line    0x0000000000002e29      0x1f3 src/platform.o
- .debug_line    0x000000000000301c       0x7c src/startup_stm32f10x_md.o
- .debug_line    0x0000000000003098      0x1e7 src/stm32f1xx_it.o
- .debug_line    0x000000000000327f      0x234 src/system_stm32f10x.o
- .debug_line    0x00000000000034b3      0x6a1 tiny_broker/tiny_broker.o
+ .debug_line    0x00000000000028bc      0x581 src/main.o
+ .debug_line    0x0000000000002e3d      0x1f3 src/platform.o
+ .debug_line    0x0000000000003030       0x7c src/startup_stm32f10x_md.o
+ .debug_line    0x00000000000030ac      0x1e7 src/stm32f1xx_it.o
+ .debug_line    0x0000000000003293      0x234 src/system_stm32f10x.o
+ .debug_line    0x00000000000034c7      0x6a1 tiny_broker/tiny_broker.o
 
-.debug_str      0x0000000000000000     0x359e
+.debug_str      0x0000000000000000     0x35eb
  .debug_str     0x0000000000000000      0x66f FreeRTOS/source/list.o
                                         0x714 (size before relaxing)
  .debug_str     0x000000000000066f      0x172 FreeRTOS/source/port.o
@@ -3100,15 +3100,15 @@ OUTPUT(home_control_center_cpp.elf elf32-littlearm)
                                         0x4ad (size before relaxing)
  .debug_str     0x000000000000238e      0x3bd src/gpio.o
                                         0x66e (size before relaxing)
- .debug_str     0x000000000000274b      0x5a7 src/main.o
-                                       0x1133 (size before relaxing)
- .debug_str     0x0000000000002cf2       0x6e src/platform.o
+ .debug_str     0x000000000000274b      0x5f4 src/main.o
+                                       0x118d (size before relaxing)
+ .debug_str     0x0000000000002d3f       0x6e src/platform.o
                                         0x2e9 (size before relaxing)
- .debug_str     0x0000000000002d60       0x7b src/stm32f1xx_it.o
+ .debug_str     0x0000000000002dad       0x7b src/stm32f1xx_it.o
                                         0x22e (size before relaxing)
- .debug_str     0x0000000000002ddb       0xcf src/system_stm32f10x.o
+ .debug_str     0x0000000000002e28       0xcf src/system_stm32f10x.o
                                         0x335 (size before relaxing)
- .debug_str     0x0000000000002eaa      0x6f4 tiny_broker/tiny_broker.o
+ .debug_str     0x0000000000002ef7      0x6f4 tiny_broker/tiny_broker.o
                                         0xf35 (size before relaxing)
 
 .comment        0x0000000000000000       0x7c

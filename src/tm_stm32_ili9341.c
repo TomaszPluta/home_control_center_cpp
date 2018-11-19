@@ -16,11 +16,11 @@
  * | along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * |----------------------------------------------------------------------
  */
+#include "stdint.h"
+#include "stddef.h"
 #include "tm_stm32_ili9341.h"
 #include "tm_stm32_fonts.h"
 #include "stm32f10x.h"
-#include "stddef.h"
-#include "stdint.h"
 
 /**
  * @brief  Orientation

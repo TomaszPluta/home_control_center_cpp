@@ -15,6 +15,7 @@
 #include "__rfm12b.h"
 #include "__rfm12b_platform.h"
 
+#include "tm_stm32_ili9341.h"
 
 #define BROKER_ADDR		(1)
 
