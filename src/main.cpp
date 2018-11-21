@@ -1,7 +1,6 @@
 
-
+#include <string>
 #include <stdint.h>
-#include "nrf24.h"
 #include "stm32f10x.h"
 #include "stm32f10x_gpio.h"
 #include "mqtt_client.h"
@@ -16,6 +15,7 @@
 #include "__rfm12b_platform.h"
 
 #include "tm_stm32_ili9341.h"
+
 
 #define BROKER_ADDR		(1)
 
@@ -99,9 +99,48 @@ int broker_discon(void *context, sockaddr_t * sockaddr){
 }
 
 
+void _delay_ms(uint32_t x){
+	;
+}
+
+
+
+std::string intToString(uint32_t intVal){
+	/*due to not available "to_string()" c++11 func*/
+	const uint8_t intSize = 8;
+	char charVal[intSize];
+	snprintf(charVal, intSize, "%u", intVal);
+	std::string strVal(charVal);
+	return strVal;
+}
+
+
 
 
 int main(){
+
+
+
+	 TM_ILI9341_Init();
+
+
+	  TM_ILI9341_DrawPixel(10, 10, ILI9341_COLOR_ORANGE);
+	  TM_ILI9341_DrawPixel(11, 11, ILI9341_COLOR_ORANGE);
+	  TM_ILI9341_DrawPixel(12, 12, ILI9341_COLOR_ORANGE);
+	  TM_ILI9341_DrawPixel(20, 20, ILI9341_COLOR_YELLOW);
+	  TM_ILI9341_DrawPixel(30, 30, ILI9341_COLOR_BLUE);
+
+
+
+
+
+	 TM_ILI9341_Puts(0,0, "Temp.  22.46", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	// TM_ILI9341_Puts(0,25, "Hum.  57%", &TM_Font_16x26, ILI9341_COLOR_CYAN, ILI9341_COLOR_BLACK);
+	 TM_ILI9341_Puts(0,50, "Out1  ON", &TM_Font_16x26, ILI9341_COLOR_GREEN, ILI9341_COLOR_BLACK);
+	 TM_ILI9341_Puts(0,75, "Out2  OFF", &TM_Font_16x26, ILI9341_COLOR_GRAY, ILI9341_COLOR_BLACK);
+
+
+
 
 
  	EnableGpioClk(LOG_UART_PORT);
@@ -154,9 +193,24 @@ int main(){
 	uint8_t frameBuff[MAX_FRAME_SIZE];
 
 
-
+uint16_t i =0;
 	 	while (1){
 	 		if (broker_receive(&broker, frameBuff, &sockaddr)){
+	 			if (frameBuff[42] == 'T'){
+	 				TM_ILI9341_Puts(0,0, "Temp.  99.88", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 			} else{
+	 				TM_ILI9341_Puts(0,25, "Temp. ", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 				i++;
+	 				std::string cnt;
+	 				cnt = intToString(i);
+	 				TM_ILI9341_Puts(70,25, (char*) cnt.data(), &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 			}
+
+
+
+
+
+
 	 			broker_packets_dispatcher(&broker, frameBuff, &sockaddr);
 
 	 		}
@@ -168,6 +222,8 @@ int main(){
 
 
 	 		  }
+
+
 
 
 	 	}

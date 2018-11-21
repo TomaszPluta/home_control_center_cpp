@@ -1,3 +1,4 @@
+gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
 core_cm3.h:930:22:void NVIC_EnableIRQ(IRQn_Type)	16	static
 main.cpp:40:6:void EXTI9_5_IRQHandler()	8	static
 main.cpp:49:5:int mqtt_net_disconnect_cb(void*)	16	static
@@ -6,4 +7,6 @@ main.cpp:74:5:int broker_conn(void*, sockaddr_t*)	16	static
 main.cpp:78:5:int broker_send(void*, sockaddr_t*, const uint8_t*, uint16_t)	32	static
 main.cpp:84:5:int broker_rec(void*, sockaddr_t*, uint8_t*, uint16_t)	32	static
 main.cpp:97:5:int broker_discon(void*, sockaddr_t*)	16	static
-main.cpp:104:5:int main()	4376	static
+main.cpp:102:6:void _delay_ms(uint32_t)	16	static
+main.cpp:108:13:std::__cxx11::string intToString(uint32_t)	32	static
+main.cpp:120:5:int main()	4432	static

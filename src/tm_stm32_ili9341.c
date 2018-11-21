@@ -167,6 +167,8 @@ uint8_t TM_SPI_Send(SPI_TypeDef* SPIx, uint8_t data) {
 
 
 void TM_ILI9341_Init() {
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	/* Init WRX pin */
 	//TM_GPIO_Init(ILI9341_WRX_PORT, ILI9341_WRX_PIN, TM_GPIO_Mode_OUT, TM_GPIO_OType_PP, TM_GPIO_PuPd_NOPULL, TM_GPIO_Speed_Medium);
 	GPIO_InitTypeDef port_wrx;
