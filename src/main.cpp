@@ -199,11 +199,14 @@ uint16_t i =0;
 	 			if (frameBuff[42] == 'T'){
 	 				TM_ILI9341_Puts(0,0, "Temp.  99.88", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
 	 			} else{
-	 				TM_ILI9341_Puts(0,25, "Temp. ", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 				TM_ILI9341_Puts(0,25, "cnt: ", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
 	 				i++;
 	 				std::string cnt;
 	 				cnt = intToString(i);
-	 				TM_ILI9341_Puts(70,25, (char*) cnt.data(), &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 				frameBuff[86]=0;
+	 				TM_ILI9341_Puts(100,25, (char*) cnt.data(), &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 				TM_ILI9341_Puts(100,50, (char*) &frameBuff[16], &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+
 	 			}
 
 
