@@ -35,6 +35,7 @@
 									<listOptionValue builtIn="false" value="../Libraries/STM32F10x_StdPeriph_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Device/ST/STM32F10x/Include"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FATFs}&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.interwork.341977743" name="Mix ARM/Thumb" superClass="com.atollic.truestudio.common_options.target.interwork"/>
 								<inputType id="com.atollic.truestudio.as.input.1047490284" name="Input" superClass="com.atollic.truestudio.as.input"/>
@@ -45,6 +46,7 @@
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.directories.select.1343717626" name="Include path" superClass="com.atollic.truestudio.gcc.directories.select" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FATFs}&quot;"/>
 									<listOptionValue builtIn="false" value="../src"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/tiny_broker}&quot;"/>
 									<listOptionValue builtIn="false" value="../Libraries/STM32F10x_StdPeriph_Driver/inc"/>
@@ -53,6 +55,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/home_control_center_cpp/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/home_control_center_cpp/FreeRTOS/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/home_control_center_cpp/tiny_broker}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/home_control_center_cpp/src/FATFs}&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.210344159" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.610670543" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F103C8" valueType="enumerated"/>
@@ -80,12 +83,14 @@
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
 								</option>
 								<option id="com.atollic.truestudio.gpp.directories.select.1497008201" name="Include path" superClass="com.atollic.truestudio.gpp.directories.select" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FATFs}&quot;"/>
 									<listOptionValue builtIn="false" value="../src"/>
 									<listOptionValue builtIn="false" value=".../tiny_broker"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="../Libraries/STM32F10x_StdPeriph_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Device/ST/STM32F10x/Include"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/home_control_center_cpp/src/FATFs}&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.968597241" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess" useByScannerDiscovery="false"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.1247669687" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" useByScannerDiscovery="false" value="STM32F103C8" valueType="enumerated"/>
@@ -137,9 +142,12 @@
 							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.860244242" name="Resource Custom Build Step Output Type"/>
 						</tool>
 					</fileInfo>
+					<fileInfo id="com.atollic.truestudio.exe.debug.1016351535.2109342993" name="ff.h" rcbsApplicability="disable" resourcePath="src/FATFs/ff.h" toolsToInvoke=""/>
 					<sourceEntries>
+						<entry excluding=".settings|inc|Debug/src/FATFs|FreeRTOS|Libraries|src|tiny_broker" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="FreeRTOS"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Libraries"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="inc"/>
 						<entry excluding="rfm12bMCK.c|rfm12b.c|rfm12bAM.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="tiny_broker"/>
 					</sourceEntries>
@@ -181,6 +189,7 @@
 									<listOptionValue builtIn="false" value="../Libraries/STM32F10x_StdPeriph_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Device/ST/STM32F10x/Include"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FATFs}&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.interwork.18008777" name="Mix ARM/Thumb" superClass="com.atollic.truestudio.common_options.target.interwork"/>
 								<inputType id="com.atollic.truestudio.as.input.1069002485" name="Input" superClass="com.atollic.truestudio.as.input"/>
@@ -195,6 +204,7 @@
 									<listOptionValue builtIn="false" value="../Libraries/STM32F10x_StdPeriph_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Device/ST/STM32F10x/Include"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FATFs}&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.552689341" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.408036455" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F103C8" valueType="enumerated"/>
@@ -226,6 +236,7 @@
 									<listOptionValue builtIn="false" value="../Libraries/STM32F10x_StdPeriph_Driver/inc"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Device/ST/STM32F10x/Include"/>
 									<listOptionValue builtIn="false" value="../Libraries/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FATFs}&quot;"/>
 								</option>
 								<option id="com.atollic.truestudio.common_options.target.endianess.672973359" name="Endianess" superClass="com.atollic.truestudio.common_options.target.endianess"/>
 								<option id="com.atollic.truestudio.common_options.target.mcpu.2093475232" name="Microcontroller" superClass="com.atollic.truestudio.common_options.target.mcpu" value="STM32F103C8" valueType="enumerated"/>
