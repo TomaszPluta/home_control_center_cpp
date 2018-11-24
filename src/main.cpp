@@ -191,11 +191,15 @@ int main(){
 	memset(buffSD, 0, 2048);
 	disk_initialize(0);
 
-	uint8_t inputBuff[128];
-	memset(inputBuff, 'x', 128);
-	disk_write(0,inputBuff,0, 1);
-	disk_read(0,buffSD,0, 1);
+//	uint8_t inputBuff[128];
+//	memset(inputBuff, 'x', 128);
+//	disk_write(0,inputBuff,0, 1);
+//	disk_read(0,buffSD,0, 1);
+	FATFS fatDrive;
+	f_mount( 0, &fatDrive);
 
+	FIL fp;
+	f_open(&fp, "0:dstfile.dat",FA_CREATE_NEW);
 
 	 TM_ILI9341_Init();
 
