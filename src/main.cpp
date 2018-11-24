@@ -195,11 +195,23 @@ int main(){
 //	memset(inputBuff, 'x', 128);
 //	disk_write(0,inputBuff,0, 1);
 //	disk_read(0,buffSD,0, 1);
-	FATFS fatDrive;
-	f_mount( 0, &fatDrive);
 
+	FATFS fatDrive;
+	bool res = f_mount( 0, &fatDrive);
 	FIL fp;
-	f_open(&fp, "0:dstfile.dat",FA_CREATE_NEW);
+	res = f_open(&fp, "dataFile.txt", FA_OPEN_ALWAYS | FA_WRITE | FA_READ);
+	uint8_t writeBuff[] = "-- Start new log -- ";
+	UINT writtenBytes;
+
+	uint8_t readBuff[16];
+	UINT readBytes;
+	res = f_read(&fp,readBuff, 16, &readBytes);
+	res = f_write(&fp, writeBuff, (sizeof(writeBuff)-1), &writtenBytes);
+	res = f_close(&fp);
+
+
+
+
 
 	 TM_ILI9341_Init();
 
@@ -210,8 +222,18 @@ int main(){
 	  TM_ILI9341_DrawPixel(20, 20, ILI9341_COLOR_YELLOW);
 	  TM_ILI9341_DrawPixel(30, 30, ILI9341_COLOR_BLUE);
 
-
-
+//
+//		FATFS fatDrive;
+//		f_mount( 0, &fatDrive);
+//
+//		FIL fp;
+//
+//		uint8_t write_buff[] = "start log file";
+//		UINT writtenBytes;
+//		f_open(&fp, "data.log",FA_CREATE_NEW | FA_WRITE);
+//		f_write(&fp, write_buff, sizeof(write_buff), &writtenBytes);
+//		f_close(&fp);
+//
 
 
 	 TM_ILI9341_Puts(0,0, "Temp.  22.46", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);

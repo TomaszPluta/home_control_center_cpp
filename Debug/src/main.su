@@ -12,4 +12,4 @@ main.cpp:135:5:int broker_discon(void*, sockaddr_t*)	16	static
 main.cpp:140:6:void _delay_ms(uint32_t)	16	static
 main.cpp:146:13:std::__cxx11::string intToString(uint32_t)	32	static
 main.cpp:158:10:uint16_t SpiTrans(uint16_t)	24	static
-main.cpp:181:5:int main()	7584	static
+main.cpp:181:5:int main()	7632	static
