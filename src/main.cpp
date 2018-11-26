@@ -180,8 +180,6 @@ uint16_t SpiTrans( uint16_t cmd )
 void LCD_BMP(const char * nazwa_pliku)
 {
 
-	  TM_ILI9341_DrawPixel(80, 80, ILI9341_COLOR_RED);
-
 
 	u32 i = 0, j = 0, liczba_pikseli = 0, liczba_bajtow =0;
 	u16 piksel;
@@ -212,23 +210,23 @@ void LCD_BMP(const char * nazwa_pliku)
 //	LCD_WriteReg(R3, 0x1008);
 //	LCD_WriteRAM_Prepare();
 	// Odczyt bajtow z karty SD i wyslanie danych do LCD
-	TM_ILI9341_SetCursorPosition(20, 20, 20, 20);
+	TM_ILI9341_SetCursorPosition(20, 20, 200, 200);
 	TM_ILI9341_SendCommand(0x2C);
 
 
 	//for(i = 0; i < liczba_pikseli; i++)
 
-		for(i = 0; i < 100; i++)
+		for(i = 0; i < 500; i++)
 	{
 		fresult = f_read (&plik, (u8*) &piksel, 2, &ile_bajtow);
 	//	LCD_WriteRAM(piksel);
 		//TM_ILI9341_DrawPixel(i, 30, piksel);
 
-		  TM_ILI9341_DrawPixel(30, 30, ILI9341_COLOR_RED);
-		  TM_ILI9341_DrawPixel(i, 30, piksel);
 
-//			TM_ILI9341_SendData(piksel >> 8);
-//			TM_ILI9341_SendData(piksel & 0xFF);
+		 // TM_ILI9341_DrawPixel(i, 30, piksel);
+
+			TM_ILI9341_SendData(piksel >> 8);
+			TM_ILI9341_SendData(piksel & 0xFF);
 
 
 	}
