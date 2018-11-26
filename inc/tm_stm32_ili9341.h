@@ -369,7 +369,9 @@ void TM_ILI9341_DisplayOff(void);
 /**
  * @}
  */
- 
+void TM_ILI9341_SetCursorPosition(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) ;
+void TM_ILI9341_SendCommand(uint8_t data) ;
+void TM_ILI9341_SendData(uint8_t data) ;
 /**
  * @}
  */

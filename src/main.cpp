@@ -173,7 +173,70 @@ uint16_t SpiTrans( uint16_t cmd )
 	NSEL_RFM12_HIGH;
 
 	return recData;
+}
 
+
+
+void LCD_BMP(const char * nazwa_pliku)
+{
+
+	  TM_ILI9341_DrawPixel(80, 80, ILI9341_COLOR_RED);
+
+
+	u32 i = 0, j = 0, liczba_pikseli = 0, liczba_bajtow =0;
+	u16 piksel;
+	u8 temp[4];
+	UINT ile_bajtow;
+	FRESULT fresult;
+	FIL plik;
+	// Otwarcie do odczytu pliku bitmapy
+	fresult = f_open (&plik, (const char *) nazwa_pliku, FA_READ);
+	// Opuszczenie dwoch pierwszych bajtow
+	fresult = f_read (&plik, &temp[0], 2, &ile_bajtow);
+	// rozmiar pliku w bajtach
+	fresult = f_read (&plik, (u8*) &liczba_bajtow, 4, &ile_bajtow);
+	// Opuszczenie 4 bajtow
+	fresult = f_read (&plik, &temp[0], 4, &ile_bajtow);
+	// Odczytanie przesuniecia (offsetu) od poczatku pliku do
+	// poczatku bajtow opisujacych obraz
+	fresult = f_read (&plik, (u8*) &i, 4, &ile_bajtow);
+	// Opuszczenie liczby bajtow od aktualnego miejsca
+	// do poczatku danych obrazu, wartosc 14, bo odczytane zostalo
+	// juz z pliku 2+4+4+4=14 bajtow
+	for(j = 0; j < (i - 14); j++){
+		fresult = f_read (&plik, &temp[0], 1, &ile_bajtow);
+	}
+	// Liczba pikseli obrazu = (rozmiar pliku - offset)/2 bajty na pisel
+	liczba_pikseli = (liczba_bajtow - i)/2;
+	// Ustawienie parametrow pracy LCD (m. in. format BGR 5-6-5)
+//	LCD_WriteReg(R3, 0x1008);
+//	LCD_WriteRAM_Prepare();
+	// Odczyt bajtow z karty SD i wyslanie danych do LCD
+	TM_ILI9341_SetCursorPosition(20, 20, 20, 20);
+	TM_ILI9341_SendCommand(0x2C);
+
+
+	//for(i = 0; i < liczba_pikseli; i++)
+
+		for(i = 0; i < 100; i++)
+	{
+		fresult = f_read (&plik, (u8*) &piksel, 2, &ile_bajtow);
+	//	LCD_WriteRAM(piksel);
+		//TM_ILI9341_DrawPixel(i, 30, piksel);
+
+		  TM_ILI9341_DrawPixel(30, 30, ILI9341_COLOR_RED);
+		  TM_ILI9341_DrawPixel(i, 30, piksel);
+
+//			TM_ILI9341_SendData(piksel >> 8);
+//			TM_ILI9341_SendData(piksel & 0xFF);
+
+
+	}
+	//LCD_CtrlLinesWrite(GPIOB, CtrlPin_NCS, Bit_SET);
+	// Przywrocenie ustawien LCD
+//	LCD_WriteReg(R3, 0x1018);
+	// Zamyka plik
+	fresult = f_close (&plik);
 }
 
 
@@ -206,14 +269,12 @@ int main(){
 	uint8_t readBuff[16];
 	UINT readBytes;
 	res = f_read(&fp,readBuff, 16, &readBytes);
-	res = f_write(&fp, writeBuff, (sizeof(writeBuff)-1), &writtenBytes);
-	res = f_close(&fp);
-
-
-
-
 
 	 TM_ILI9341_Init();
+	LCD_BMP("bgg.bmp");
+
+
+
 
 
 	  TM_ILI9341_DrawPixel(10, 10, ILI9341_COLOR_ORANGE);
@@ -238,8 +299,8 @@ int main(){
 
 	 TM_ILI9341_Puts(0,0, "Temp.  22.46", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
 	// TM_ILI9341_Puts(0,25, "Hum.  57%", &TM_Font_16x26, ILI9341_COLOR_CYAN, ILI9341_COLOR_BLACK);
-	 TM_ILI9341_Puts(0,50, "Out1  ON", &TM_Font_16x26, ILI9341_COLOR_GREEN, ILI9341_COLOR_BLACK);
-	 TM_ILI9341_Puts(0,75, "Out2  OFF", &TM_Font_16x26, ILI9341_COLOR_GRAY, ILI9341_COLOR_BLACK);
+//	 TM_ILI9341_Puts(0,50, "Out1  ON", &TM_Font_16x26, ILI9341_COLOR_GREEN, ILI9341_COLOR_BLACK);
+//	 TM_ILI9341_Puts(0,75, "Out2  OFF", &TM_Font_16x26, ILI9341_COLOR_GRAY, ILI9341_COLOR_BLACK);
 
 
 
