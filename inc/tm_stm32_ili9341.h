@@ -371,6 +371,7 @@ void TM_ILI9341_SetCursorPosition(uint16_t x1, uint16_t y1, uint16_t x2, uint16_
 void TM_ILI9341_SendCommand(uint8_t data) ;
 void TM_ILI9341_SendData(uint8_t data) ;
 void TM_ILI9341_Putc_background(uint16_t x, uint16_t y, char c, TM_FontDef_t *font, uint32_t foreground, uint32_t background) ;
+void TM_ILI9341_Puts_background(uint16_t x, uint16_t y, char *str, TM_FontDef_t *font, uint32_t foreground, uint32_t background);
 /**
  * @}
  */
