@@ -320,17 +320,11 @@ int main(){
 	res = f_read(&fp,readBuff, 16, &readBytes);
 
 	 TM_ILI9341_Init();
-	 ReadBmpToLcd("bgg.bmp");
+	// ReadBmpToLcd("bgg.bmp");
+	 ReadBmpToLcd("bg1.bmp");
 
 
 
-
-
-	  TM_ILI9341_DrawPixel(10, 10, ILI9341_COLOR_ORANGE);
-	  TM_ILI9341_DrawPixel(11, 11, ILI9341_COLOR_ORANGE);
-	  TM_ILI9341_DrawPixel(12, 12, ILI9341_COLOR_ORANGE);
-	  TM_ILI9341_DrawPixel(20, 20, ILI9341_COLOR_YELLOW);
-	  TM_ILI9341_DrawPixel(30, 30, ILI9341_COLOR_BLUE);
 
 //
 //		FATFS fatDrive;
@@ -346,10 +340,10 @@ int main(){
 //
 
 
-	 TM_ILI9341_Puts(0,0, "Temp.  22.46", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
-	// TM_ILI9341_Puts(0,25, "Hum.  57%", &TM_Font_16x26, ILI9341_COLOR_CYAN, ILI9341_COLOR_BLACK);
-//	 TM_ILI9341_Puts(0,50, "Out1  ON", &TM_Font_16x26, ILI9341_COLOR_GREEN, ILI9341_COLOR_BLACK);
-//	 TM_ILI9341_Puts(0,75, "Out2  OFF", &TM_Font_16x26, ILI9341_COLOR_GRAY, ILI9341_COLOR_BLACK);
+	 TM_ILI9341_Puts(0,75, "Temp", &TM_Font_16x26, ILI9341_COLOR_BLUE);
+	 TM_ILI9341_Puts(0,100, "Press", &TM_Font_16x26, ILI9341_COLOR_RED);
+	 TM_ILI9341_Puts(0,125, "Humid", &TM_Font_16x26, ILI9341_COLOR_GREEN);
+	 TM_ILI9341_Puts(0,150, "Light", &TM_Font_16x26, ILI9341_COLOR_GRAY);
 
 
 
@@ -409,15 +403,15 @@ uint16_t i =0;
 	 	while (1){
 	 		if (broker_receive(&broker, frameBuff, &sockaddr)){
 	 			if (frameBuff[42] == 'T'){
-	 				TM_ILI9341_Puts(0,0, "Temp.  99.88", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 				TM_ILI9341_Puts(0,0, "Temp.  99.88", &TM_Font_16x26, ILI9341_COLOR_BLUE);
 	 			} else{
-	 				TM_ILI9341_Puts(0,25, "cnt: ", &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 				TM_ILI9341_Puts(0,25, "cnt: ", &TM_Font_16x26, ILI9341_COLOR_BLUE);
 	 				i++;
 	 				std::string cnt;
 	 				cnt = intToString(i);
 	 				frameBuff[86]=0;
-	 				TM_ILI9341_Puts(100,25, (char*) cnt.data(), &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
-	 				TM_ILI9341_Puts(100,50, (char*) &frameBuff[16], &TM_Font_16x26, ILI9341_COLOR_BLUE, ILI9341_COLOR_BLACK);
+	 				TM_ILI9341_Puts(100,25, (char*) cnt.data(), &TM_Font_16x26, ILI9341_COLOR_BLUE);
+	 				TM_ILI9341_Puts(100,50, (char*) &frameBuff[16], &TM_Font_16x26, ILI9341_COLOR_BLUE);
 
 	 			}
 

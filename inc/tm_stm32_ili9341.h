@@ -271,10 +271,9 @@ void TM_ILI9341_Rotate(TM_ILI9341_Orientation_t orientation);
  * @param  c: Character to be displayed
  * @param  *font: Pointer to @ref TM_FontDef_t used font
  * @param  foreground: Color for char
- * @param  background: Color for char background
  * @retval None
  */
-void TM_ILI9341_Putc(uint16_t x, uint16_t y, char c, TM_FontDef_t* font, uint32_t foreground, uint32_t background);
+void TM_ILI9341_Putc(uint16_t x, uint16_t y, char c, TM_FontDef_t* font, uint32_t foreground);
 
 /**
  * @brief  Puts string to LCD
@@ -283,10 +282,9 @@ void TM_ILI9341_Putc(uint16_t x, uint16_t y, char c, TM_FontDef_t* font, uint32_
  * @param  *str: Pointer to first character
  * @param  *font: Pointer to @ref TM_FontDef_t used font
  * @param  foreground: Color for string
- * @param  background: Color for string background
  * @retval None
  */
-void TM_ILI9341_Puts(uint16_t x, uint16_t y, char* str, TM_FontDef_t *font, uint32_t foreground, uint32_t background);
+void TM_ILI9341_Puts(uint16_t x, uint16_t y, char* str, TM_FontDef_t *font, uint32_t foreground);
 
 /**
  * @brief  Gets width and height of box with text
@@ -372,6 +370,7 @@ void TM_ILI9341_DisplayOff(void);
 void TM_ILI9341_SetCursorPosition(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) ;
 void TM_ILI9341_SendCommand(uint8_t data) ;
 void TM_ILI9341_SendData(uint8_t data) ;
+void TM_ILI9341_Putc_background(uint16_t x, uint16_t y, char c, TM_FontDef_t *font, uint32_t foreground, uint32_t background) ;
 /**
  * @}
  */

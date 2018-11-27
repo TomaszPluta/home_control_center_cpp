@@ -22,5 +22,7 @@ tm_stm32_ili9341.c:885:6:TM_ILI9341_DrawFilledRectangle	40	static
 tm_stm32_ili9341.c:907:6:TM_ILI9341_DrawCircle	40	static
 tm_stm32_ili9341.c:941:6:TM_ILI9341_DrawFilledCircle	56	static
 tm_stm32_ili9341.c:975:6:TM_ILI9341_Puts	40	static
-tm_stm32_ili9341.c:1005:6:TM_ILI9341_GetStringSize	32	static
-tm_stm32_ili9341.c:1014:6:TM_ILI9341_Putc	56	static
+tm_stm32_ili9341.c:1006:6:TM_ILI9341_Puts_background	40	static
+tm_stm32_ili9341.c:1037:6:TM_ILI9341_GetStringSize	32	static
+tm_stm32_ili9341.c:1046:6:TM_ILI9341_Putc	40	static
+tm_stm32_ili9341.c:1073:6:TM_ILI9341_Putc_background	56	static
