@@ -177,65 +177,116 @@ uint16_t SpiTrans( uint16_t cmd )
 
 
 
-void LCD_BMP(const char * nazwa_pliku)
+
+
+void ReadBmpToLcd (const char * fileName)
 {
+	u32 i = 0, j = 0;
+	uint32_t totalPixelNb = 0;
 
-
-	u32 i = 0, j = 0, liczba_pikseli = 0, liczba_bajtow =0;
-	u16 piksel;
-	u8 temp[4];
-	UINT ile_bajtow;
+	uint32_t pictureSize;
+	uint16_t piksel;
+	uint8_t temp[4];
+	UINT readByteNb;
 	FRESULT fresult;
-	FIL plik;
-	// Otwarcie do odczytu pliku bitmapy
-	fresult = f_open (&plik, (const char *) nazwa_pliku, FA_READ);
-	// Opuszczenie dwoch pierwszych bajtow
-	fresult = f_read (&plik, &temp[0], 2, &ile_bajtow);
-	// rozmiar pliku w bajtach
-	fresult = f_read (&plik, (u8*) &liczba_bajtow, 4, &ile_bajtow);
-	// Opuszczenie 4 bajtow
-	fresult = f_read (&plik, &temp[0], 4, &ile_bajtow);
-	// Odczytanie przesuniecia (offsetu) od poczatku pliku do
-	// poczatku bajtow opisujacych obraz
-	fresult = f_read (&plik, (u8*) &i, 4, &ile_bajtow);
-	// Opuszczenie liczby bajtow od aktualnego miejsca
-	// do poczatku danych obrazu, wartosc 14, bo odczytane zostalo
-	// juz z pliku 2+4+4+4=14 bajtow
-	for(j = 0; j < (i - 14); j++){
-		fresult = f_read (&plik, &temp[0], 1, &ile_bajtow);
+	FIL fd;
+
+
+	fresult = f_open (&fd, (const char *) fileName, FA_READ);
+
+	uint8_t totalBytesNumberOffset = 2;
+	fresult = f_lseek (&fd, totalBytesNumberOffset);
+
+	uint32_t totalBytesNumber =0;
+	fresult = f_read (&fd, (u8*) &totalBytesNumber, sizeof(uint32_t), &readByteNb);
+
+	uint8_t pictureSizeOffset = 10;
+	fresult = f_lseek (&fd, pictureSizeOffset);
+
+	uint8_t dummyBytes = 4;
+	fresult = f_read (&fd, (u8*) &pictureSize, dummyBytes, &readByteNb);
+
+	for(j = 0; j < (pictureSize - 14); j++){
+		fresult = f_read (&fd, &temp[0], 1, &readByteNb);
 	}
-	// Liczba pikseli obrazu = (rozmiar pliku - offset)/2 bajty na pisel
-	liczba_pikseli = (liczba_bajtow - i)/2;
-	// Ustawienie parametrow pracy LCD (m. in. format BGR 5-6-5)
-//	LCD_WriteReg(R3, 0x1008);
-//	LCD_WriteRAM_Prepare();
-	// Odczyt bajtow z karty SD i wyslanie danych do LCD
-	TM_ILI9341_SetCursorPosition(20, 20, 200, 200);
+
+	const uint8_t bytesperPixel = 2;
+	totalPixelNb = (totalBytesNumber - i)/bytesperPixel;
+	TM_ILI9341_SetCursorPosition(0, 0, 240, 320);
 	TM_ILI9341_SendCommand(0x2C);
 
-
-	//for(i = 0; i < liczba_pikseli; i++)
-
-		for(i = 0; i < 500; i++)
+	for(i = 0; i < totalPixelNb; i++)
 	{
-		fresult = f_read (&plik, (u8*) &piksel, 2, &ile_bajtow);
-	//	LCD_WriteRAM(piksel);
-		//TM_ILI9341_DrawPixel(i, 30, piksel);
-
-
-		 // TM_ILI9341_DrawPixel(i, 30, piksel);
-
-			TM_ILI9341_SendData(piksel >> 8);
-			TM_ILI9341_SendData(piksel & 0xFF);
-
-
+		fresult = f_read (&fd, (u8*) &piksel, bytesperPixel, &readByteNb);
+		TM_ILI9341_SendData(piksel >> 8);
+		TM_ILI9341_SendData(piksel & 0xFF);
 	}
-	//LCD_CtrlLinesWrite(GPIOB, CtrlPin_NCS, Bit_SET);
-	// Przywrocenie ustawien LCD
-//	LCD_WriteReg(R3, 0x1018);
-	// Zamyka plik
-	fresult = f_close (&plik);
+
+	fresult = f_close (&fd);
 }
+
+
+
+
+
+//
+//void LCD_BMP(const char * nazwa_pliku)
+//{
+//	u32 i = 0, j = 0, liczba_pikseli = 0, liczba_bajtow =0;
+//	u16 piksel;
+//	u8 temp[4];
+//	UINT ile_bajtow;
+//	FRESULT fresult;
+//	FIL plik;
+//	// Otwarcie do odczytu pliku bitmapy
+//	fresult = f_open (&plik, (const char *) nazwa_pliku, FA_READ);
+//	// Opuszczenie dwoch pierwszych bajtow
+//	fresult = f_read (&plik, &temp[0], 2, &ile_bajtow);
+//	// rozmiar pliku w bajtach
+//	fresult = f_read (&plik, (u8*) &liczba_bajtow, 4, &ile_bajtow);
+//	// Opuszczenie 4 bajtow
+//	fresult = f_read (&plik, &temp[0], 4, &ile_bajtow);
+//	// Odczytanie przesuniecia (offsetu) od poczatku pliku do
+//	// poczatku bajtow opisujacych obraz
+//	fresult = f_read (&plik, (u8*) &i, 4, &ile_bajtow);
+//	// Opuszczenie liczby bajtow od aktualnego miejsca
+//	// do poczatku danych obrazu, wartosc 14, bo odczytane zostalo
+//	// juz z pliku 2+4+4+4=14 bajtow
+//	for(j = 0; j < (i - 14); j++){
+//		fresult = f_read (&plik, &temp[0], 1, &ile_bajtow);
+//	}
+//	// Liczba pikseli obrazu = (rozmiar pliku - offset)/2 bajty na pisel
+//	liczba_pikseli = (liczba_bajtow - i)/2;
+//	// Ustawienie parametrow pracy LCD (m. in. format BGR 5-6-5)
+////	LCD_WriteReg(R3, 0x1008);
+////	LCD_WriteRAM_Prepare();
+//	// Odczyt bajtow z karty SD i wyslanie danych do LCD
+//	TM_ILI9341_SetCursorPosition(0, 0, 240,320);
+//	TM_ILI9341_SendCommand(0x2C);
+//
+//
+//	//for(i = 0; i < liczba_pikseli; i++)
+//
+//		for(i = 0; i < liczba_pikseli; i++)
+//	{
+//		fresult = f_read (&plik, (u8*) &piksel, 2, &ile_bajtow);
+//	//	LCD_WriteRAM(piksel);
+//		//TM_ILI9341_DrawPixel(i, 30, piksel);
+//
+//
+//		 // TM_ILI9341_DrawPixel(i, 30, piksel);
+//
+//			TM_ILI9341_SendData(piksel >> 8);
+//			TM_ILI9341_SendData(piksel & 0xFF);
+//
+//
+//	}
+//	//LCD_CtrlLinesWrite(GPIOB, CtrlPin_NCS, Bit_SET);
+//	// Przywrocenie ustawien LCD
+////	LCD_WriteReg(R3, 0x1018);
+//	// Zamyka plik
+//	fresult = f_close (&plik);
+//}
 
 
 
@@ -269,7 +320,7 @@ int main(){
 	res = f_read(&fp,readBuff, 16, &readBytes);
 
 	 TM_ILI9341_Init();
-	LCD_BMP("bgg.bmp");
+	 ReadBmpToLcd("bgg.bmp");
 
 
 
